@@ -8,30 +8,35 @@ Player::Player(float positionX, float positionY, const std::string &spritePath)
 {
     sprite = LoadTexture("assets/img/alien.png");
     bounds = {positionX, positionY, (float)sprite.width, (float)sprite.height};
-    speed = 600;
+    speed = 50;
+    velocity = {0, 0};
     score = 0;
 }
 
 void Player::Update(float deltaTime)
 {
-    if (IsKeyDown(KEY_W))
-    {
-        bounds.y -= speed * deltaTime;
-    }
+    velocity.y += 20.8f * deltaTime;
 
-    else if (IsKeyDown(KEY_S))
-    {
-        bounds.y += speed * deltaTime;
-    }
+    bounds.y += velocity.y;
+    bounds.x += velocity.x;
 
-    else if (IsKeyDown(KEY_D))
+    if (IsKeyDown(KEY_D))
     {
-        bounds.x += speed * deltaTime;
+        velocity.x += speed * deltaTime;
     }
 
     else if (IsKeyDown(KEY_A))
     {
-        bounds.x -= speed * deltaTime;
+        velocity.x -= speed * deltaTime;
+    }
+
+    velocity.x *= 0.9f;
+
+    if (bounds.y < 0)
+    {
+        bounds.y = 400 - bounds.height;
+        bounds.x = 500;
+        velocity.y = 0;
     }
 }
 
@@ -43,4 +48,12 @@ void Player::Draw()
 void Player::Dispose()
 {
     UnloadTexture(sprite);
+}
+
+Rectangle Player::GetPreviousPosition()
+{
+    float positionX = bounds.x - velocity.x;
+    float positionY = bounds.y - velocity.y;
+
+    return {positionX, positionY, bounds.width, bounds.height};
 }

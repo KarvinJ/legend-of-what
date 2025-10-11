@@ -10,8 +10,12 @@ public:
     void Update(float deltaTime);
     void Draw();
     void Dispose();
+    Rectangle GetPreviousPosition();
+
+public:
     Rectangle bounds;
     Texture2D sprite;
+    Vector2 velocity;
     int score;
 
 private:
