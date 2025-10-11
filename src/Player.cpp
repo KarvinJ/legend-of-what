@@ -32,7 +32,7 @@ void Player::Update(float deltaTime)
 
     velocity.x *= 0.9f;
 
-    if (bounds.y < 0)
+    if (bounds.y > 1280)
     {
         bounds.y = 400 - bounds.height;
         bounds.x = 500;
