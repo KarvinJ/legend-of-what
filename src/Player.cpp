@@ -6,7 +6,7 @@ Player::Player()
 
 Player::Player(float positionX, float positionY, const std::string &spritePath)
 {
-    sprite = LoadTexture("assets/img/alien.png");
+    sprite = LoadTexture(spritePath.c_str());
     bounds = {positionX, positionY, (float)sprite.width, (float)sprite.height};
     speed = 50;
     velocity = {0, 0};
