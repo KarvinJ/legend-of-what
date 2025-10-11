@@ -13,7 +13,6 @@ Game::Game()
     player = Player(screenWidth / 2, screenHeight / 2, "assets/img/alien.png");
     actionSound = LoadSound("assets/sounds/okay.wav");
 
-
     collisionBounds = {
         {0, screenHeight - 64, screenWidth, 64},
         {screenWidth / 2, screenHeight - 180, 64, 128},
@@ -54,7 +53,7 @@ void Game::Draw()
     {
         DrawRectangleRec(collisionBound, BLUE);
     }
-    
+
     player.Draw();
 
     if (isGamePaused)
@@ -77,48 +76,46 @@ bool Game::CheckCollisionInY(Rectangle bounds, Rectangle platform)
 
 void Game::ManageStructureCollision(float deltaTime)
 {
-    for (auto &structure : collisionBounds) {
+    for (auto &platform : collisionBounds)
+    {
+        if (CheckCollisionRecs(player.bounds, platform))
+        {
+            if (CheckCollisionInX(player.GetPreviousPosition(), platform))
+            {
+                //   Player was falling downwards. Resolve upwards.
+                if (player.velocity.y > 0)
+                {
 
-            if (CheckCollisionRecs(player.bounds, structure)) {
+                    player.bounds.y = platform.y - player.bounds.height;
+                    player.velocity.y = 0;
 
-//                If the player previous position is within the x bounds of the platform,
-//                then we need to resolve the collision by changing the y value
-                if (CheckCollisionInX(player.GetPreviousPosition(), structure)) {
-
-//                    Player was falling downwards. Resolve upwards.
-                    if (player.velocity.y < 0) {
-
-                        player.bounds.y = structure.y + structure.height;
-                        player.velocity.y = 0;
-
-                        if (player.velocity.y == 0 && IsKeyPressed(KEY_SPACE))
-                            player.velocity.y = 800 * deltaTime;
-                    }
-
-//                     Player was moving upwards. Resolve downwards
-                    else {
-
-                        //check this case. For the collision bug
-                        player.bounds.y = structure.y - player.bounds.height;
-                        player.velocity.y = 0;
-                    }
+                    if (player.velocity.y == 0 && IsKeyPressed(KEY_SPACE))
+                        player.velocity.y = -600 * deltaTime;
                 }
-                //  If the player previous position is within the y bounds of the platform,
-//                then we need to resolve the collision by changing the x value
-                else if (CheckCollisionInY(player.GetPreviousPosition(), structure)) {
 
-//                     Player was traveling right. Resolve to the left
-                    if (player.velocity.x > 0)
-                        player.bounds.x = structure.x - player.bounds.width;
-
-//                     Player was traveling left. Resolve to the right
-                    else
-                        player.bounds.x = structure.x + structure.width;
-
-                    player.velocity.x = 0;
+                else
+                {
+                    // check this case. For the collision bug
+                    player.bounds.y = platform.y + platform.height;
+                    player.velocity.y = 0;
                 }
             }
+            else if (CheckCollisionInY(player.GetPreviousPosition(), platform))
+            {
+                if (player.velocity.x > 0)
+                {
+                    player.bounds.x = platform.x - player.bounds.width;
+                }
+
+                else
+                {
+                    player.bounds.x = platform.x + platform.width;
+                }
+
+                player.velocity.x = 0;
+            }
         }
+    }
 }
 
 Game::~Game()
