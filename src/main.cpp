@@ -1,4 +1,3 @@
-#include <raylib.h>
 #include "Game.h"
 
 int main()
@@ -10,6 +9,4 @@ int main()
         game.Update();
         game.Draw();
     }
-
-    CloseWindow();
 }

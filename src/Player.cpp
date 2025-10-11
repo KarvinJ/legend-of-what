@@ -42,7 +42,8 @@ void Player::Update(float deltaTime)
 
 void Player::Draw()
 {
-    DrawTexture(sprite, bounds.x, bounds.y, WHITE);
+    // DrawTexture(sprite, bounds.x, bounds.y, WHITE);
+    DrawRectangleRec(bounds, WHITE);
 }
 
 void Player::Dispose()

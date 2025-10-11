@@ -16,6 +16,7 @@ Game::Game()
     collisionBounds = {
         {0, screenHeight - 64, screenWidth, 64},
         {screenWidth / 2, screenHeight - 180, 64, 128},
+        {screenWidth / 2 + 140, screenHeight - 200, 128, 64},
     };
 
     // music = LoadMusicStream("assets/music/pixel3.mp3");
@@ -82,15 +83,15 @@ void Game::ManageStructureCollision(float deltaTime)
         {
             if (CheckCollisionInX(player.GetPreviousPosition(), platform))
             {
-                //   Player was falling downwards. Resolve upwards.
                 if (player.velocity.y > 0)
                 {
-
                     player.bounds.y = platform.y - player.bounds.height;
                     player.velocity.y = 0;
 
                     if (player.velocity.y == 0 && IsKeyPressed(KEY_SPACE))
+                    {
                         player.velocity.y = -600 * deltaTime;
+                    }
                 }
 
                 else
@@ -124,4 +125,5 @@ Game::~Game()
     UnloadSound(actionSound);
     // UnloadMusicStream(music);
     CloseAudioDevice();
+    CloseWindow();
 }
