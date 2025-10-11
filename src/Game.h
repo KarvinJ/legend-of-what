@@ -19,6 +19,7 @@ private:
     bool isGamePaused;
     float screenWidth;
     float screenHeight;
+    Camera2D camera;
     std::vector<Rectangle> collisionBounds;
     Player player;
     Sound actionSound;
