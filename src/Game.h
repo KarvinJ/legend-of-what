@@ -7,15 +7,15 @@ class Game
 
 public:
     Game();
+    ~Game();
     void Update();
     void Draw();
-    void Dispose();
 
 private:
-    Player player;
     bool isGamePaused;
     int screenWidth;
     int screenHeight;
+    Player player;
     Sound actionSound;
     Music music;
 };

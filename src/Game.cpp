@@ -13,9 +13,9 @@ Game::Game()
     player = Player(screenWidth / 2, screenHeight / 2, "assets/img/alien.png");
     actionSound = LoadSound("assets/sounds/okay.wav");
 
-    music = LoadMusicStream("assets/music/pixel3.mp3");
-    music.looping = true;
-    PlayMusicStream(music);
+    // music = LoadMusicStream("assets/music/pixel3.mp3");
+    // music.looping = true;
+    // PlayMusicStream(music);
 }
 
 void Game::Update()
@@ -52,10 +52,10 @@ void Game::Draw()
     EndDrawing();
 }
 
-void Game::Dispose()
+Game::~Game()
 {
     player.Dispose();
     UnloadSound(actionSound);
-    UnloadMusicStream(music);
+    // UnloadMusicStream(music);
     CloseAudioDevice();
 }

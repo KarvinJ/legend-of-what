@@ -11,6 +11,5 @@ int main()
         game.Draw();
     }
 
-    game.Dispose();
     CloseWindow();
 }
