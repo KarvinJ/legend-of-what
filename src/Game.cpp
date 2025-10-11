@@ -91,8 +91,8 @@ void Game::ManageStructureCollision(float deltaTime)
                         player.bounds.y = structure.y + structure.height;
                         player.velocity.y = 0;
 
-                        // if (player.velocity.y == 0 && Gdx.input.isKeyPressed(Input.Keys.SPACE))
-                        //     player.velocity.y = 800 * deltaTime;
+                        if (player.velocity.y == 0 && IsKeyPressed(KEY_SPACE))
+                            player.velocity.y = 800 * deltaTime;
                     }
 
 //                     Player was moving upwards. Resolve downwards
