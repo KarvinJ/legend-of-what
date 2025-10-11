@@ -5,6 +5,7 @@
 class Player
 {
 public:
+    Player();
     Player(float positionX, float positionY, const std::string &spritePath);
     void Update(float deltaTime);
     void Draw();

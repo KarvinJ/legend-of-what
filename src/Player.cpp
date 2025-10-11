@@ -1,5 +1,9 @@
 #include "Player.h"
 
+Player::Player()
+{
+}
+
 Player::Player(float positionX, float positionY, const std::string &spritePath)
 {
     sprite = LoadTexture("assets/img/alien.png");
