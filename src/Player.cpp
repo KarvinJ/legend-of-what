@@ -7,8 +7,14 @@ Player::Player()
 Player::Player(float positionX, float positionY, const std::string &spritePath)
 {
     sprite = LoadTexture(spritePath.c_str());
-    bounds = {positionX, positionY, (float)sprite.width / 4, (float)sprite.height};
-    animationBounds = {0, 0, (float)sprite.width / 4, (float)sprite.height};
+
+    vector<TextureInfo> textureInfos = loadSpriteSheet("assets/img/characters/character-spritesheet.txt");
+
+    textureInfo = getTextureInfoByName(textureInfos, "idle");
+
+    bounds = {positionX, positionY, (float)textureInfo.bounds.width / 4, (float)textureInfo.bounds.height};
+
+    animationBounds = {textureInfo.bounds.x, textureInfo.bounds.y, (float)textureInfo.bounds.width / 4, (float)textureInfo.bounds.height};
     speed = 50;
     velocity = {0, 0};
     score = 0;
@@ -26,12 +32,12 @@ void Player::Update(float deltaTime)
         framesCounter = 0;
         currentFrame++;
 
-        if (currentFrame > 4)
+        if (currentFrame > 3)
         {
             currentFrame = 0;
         }
 
-        animationBounds.x = (float)currentFrame * (float)animationBounds.width;
+        animationBounds.x = textureInfo.bounds.x + ((float)currentFrame * (float)animationBounds.width);
     }
 
     velocity.y += 20.8f * deltaTime;

@@ -10,7 +10,7 @@ Game::Game()
     SetTargetFPS(60);
     InitAudioDevice();
 
-    player = Player(screenWidth / 2, screenHeight / 2, "assets/img/characters/idle.png");
+    player = Player(screenWidth / 2, screenHeight / 2, "assets/img/characters/character-spritesheet.png");
     actionSound = LoadSound("assets/sounds/okay.wav");
 
     collisionBounds = {

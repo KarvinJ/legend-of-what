@@ -1,4 +1,5 @@
 #pragma once
+#include "SpriteSheetLoader.h"
 #include <raylib.h>
 #include <string>
 
@@ -22,6 +23,7 @@ public:
 
 private:
     Rectangle animationBounds;
+    TextureInfo textureInfo;
     int speed;
     int framesCounter;
     int framesSpeed;
