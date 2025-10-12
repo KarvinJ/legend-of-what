@@ -62,7 +62,18 @@ void Player::Update(float deltaTime)
 void Player::Draw()
 {
     Vector2 drawPosition = GetDrawPosition();
-    DrawTextureRec(sprite, animationBounds, drawPosition, WHITE);
+
+    Rectangle tempBounds = animationBounds;
+    if (velocity.x > 0)
+    {
+        tempBounds.width = animationBounds.width;
+    }
+    else
+    {
+        tempBounds.width = -animationBounds.width;
+    }
+
+    DrawTextureRec(sprite, tempBounds, drawPosition, WHITE);
 
     // Rectangle collisionBounds = GetCollisionBounds();
     // DrawRectangleRec(collisionBounds, WHITE);
