@@ -44,20 +44,15 @@ void Player::Draw()
 {
     Rectangle collisionBounds = GetCollisionBounds();
 
-    DrawTextureRec(sprite, {0, 0, 64, 80}, {collisionBounds.x, collisionBounds.y}, WHITE);
+    DrawTextureRec(sprite, {0, 0, 64, 80}, {bounds.x, bounds.y - bounds.height / 2 / 2}, WHITE);
     DrawRectangleRec(collisionBounds, WHITE);
-}
-
-void Player::Dispose()
-{
-    UnloadTexture(sprite);
 }
 
 Rectangle Player::GetCollisionBounds()
 {
     return {
         bounds.x + bounds.width / 2 / 2,
-        bounds.y + bounds.height / 2 / 2,
+        bounds.y,
         bounds.width / 2,
         bounds.height / 2};
 }
@@ -70,4 +65,9 @@ Rectangle Player::GetPreviousPosition()
     float positionY = collisionBounds.y - velocity.y;
 
     return {positionX, positionY, collisionBounds.width, collisionBounds.height};
+}
+
+void Player::Dispose()
+{
+    UnloadTexture(sprite);
 }

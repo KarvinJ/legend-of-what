@@ -96,13 +96,13 @@ void Game::ManageStructureCollision(float deltaTime)
     {
         Rectangle playerBounds = player.GetCollisionBounds();
         
-        if (CheckCollisionRecs(player.bounds, platform))
+        if (CheckCollisionRecs(playerBounds, platform))
         {
             if (CheckCollisionInX(player.GetPreviousPosition(), platform))
             {
                 if (player.velocity.y > 0)
                 {
-                    player.bounds.y = platform.y - player.bounds.height;
+                    player.bounds.y = platform.y - playerBounds.height;
                     player.velocity.y = 0;
 
                     if (IsKeyPressed(KEY_SPACE))
@@ -122,7 +122,7 @@ void Game::ManageStructureCollision(float deltaTime)
             {
                 if (player.velocity.x > 0)
                 {
-                    player.bounds.x = platform.x - player.bounds.width;
+                    player.bounds.x = platform.x - playerBounds.width;
                 }
 
                 else
