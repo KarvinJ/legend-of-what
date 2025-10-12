@@ -10,6 +10,7 @@ public:
     void Update(float deltaTime);
     void Draw();
     void Dispose();
+    Rectangle GetCollisionBounds();
     Rectangle GetPreviousPosition();
 
 public:

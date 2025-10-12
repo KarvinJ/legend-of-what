@@ -10,7 +10,7 @@ Game::Game()
     SetTargetFPS(60);
     InitAudioDevice();
 
-    player = Player(screenWidth / 2, screenHeight / 2, "assets/img/alien.png");
+    player = Player(screenWidth / 2, screenHeight / 2, "assets/img/characters/idle.png");
     actionSound = LoadSound("assets/sounds/okay.wav");
 
     collisionBounds = {
@@ -94,6 +94,8 @@ void Game::ManageStructureCollision(float deltaTime)
 {
     for (auto &platform : collisionBounds)
     {
+        Rectangle playerBounds = player.GetCollisionBounds();
+        
         if (CheckCollisionRecs(player.bounds, platform))
         {
             if (CheckCollisionInX(player.GetPreviousPosition(), platform))

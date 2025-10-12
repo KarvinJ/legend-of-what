@@ -7,7 +7,7 @@ Player::Player()
 Player::Player(float positionX, float positionY, const std::string &spritePath)
 {
     sprite = LoadTexture(spritePath.c_str());
-    bounds = {positionX, positionY, (float)sprite.width, (float)sprite.height};
+    bounds = {positionX, positionY, (float)sprite.width / 4, (float)sprite.height};
     speed = 50;
     velocity = {0, 0};
     score = 0;
@@ -42,8 +42,10 @@ void Player::Update(float deltaTime)
 
 void Player::Draw()
 {
-    // DrawTexture(sprite, bounds.x, bounds.y, WHITE);
-    DrawRectangleRec(bounds, WHITE);
+    Rectangle collisionBounds = GetCollisionBounds();
+
+    DrawTextureRec(sprite, {0, 0, 64, 80}, {collisionBounds.x, collisionBounds.y}, WHITE);
+    DrawRectangleRec(collisionBounds, WHITE);
 }
 
 void Player::Dispose()
@@ -51,10 +53,21 @@ void Player::Dispose()
     UnloadTexture(sprite);
 }
 
+Rectangle Player::GetCollisionBounds()
+{
+    return {
+        bounds.x + bounds.width / 2 / 2,
+        bounds.y + bounds.height / 2 / 2,
+        bounds.width / 2,
+        bounds.height / 2};
+}
+
 Rectangle Player::GetPreviousPosition()
 {
-    float positionX = bounds.x - velocity.x;
-    float positionY = bounds.y - velocity.y;
+    Rectangle collisionBounds = GetCollisionBounds();
 
-    return {positionX, positionY, bounds.width, bounds.height};
+    float positionX = collisionBounds.x - velocity.x;
+    float positionY = collisionBounds.y - velocity.y;
+
+    return {positionX, positionY, collisionBounds.width, collisionBounds.height};
 }
