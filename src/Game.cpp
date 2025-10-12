@@ -24,7 +24,7 @@ Game::Game()
     camera.offset = (Vector2){screenWidth / 2.0f, screenHeight / 2.0f + 200}; // this is for control the camera default position
     camera.target = {player.bounds.x, 600}; // the object that the camera will be following
     camera.rotation = 0.0f;
-    camera.zoom = 1.0f;
+    camera.zoom = 1.5f;
 
     // music = LoadMusicStream("assets/music/pixel3.mp3");
     // music.looping = true;

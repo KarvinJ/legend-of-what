@@ -8,13 +8,32 @@ Player::Player(float positionX, float positionY, const std::string &spritePath)
 {
     sprite = LoadTexture(spritePath.c_str());
     bounds = {positionX, positionY, (float)sprite.width / 4, (float)sprite.height};
+    animationBounds = {0, 0, (float)sprite.width / 4, (float)sprite.height};
     speed = 50;
     velocity = {0, 0};
     score = 0;
+    framesCounter = 0;
+    framesSpeed = 6;
+    currentFrame = 0;
 }
 
 void Player::Update(float deltaTime)
 {
+    framesCounter++;
+
+    if (framesCounter >= (60 / framesSpeed))
+    {
+        framesCounter = 0;
+        currentFrame++;
+
+        if (currentFrame > 4)
+        {
+            currentFrame = 0;
+        }
+
+        animationBounds.x = (float)currentFrame * (float)animationBounds.width;
+    }
+
     velocity.y += 20.8f * deltaTime;
 
     bounds.y += velocity.y;
@@ -43,10 +62,10 @@ void Player::Update(float deltaTime)
 void Player::Draw()
 {
     Vector2 drawPosition = GetDrawPosition();
-    DrawTextureRec(sprite, {0, 0, 64, 80}, drawPosition, WHITE);
-    
-    Rectangle collisionBounds = GetCollisionBounds();
-    DrawRectangleRec(collisionBounds, WHITE);
+    DrawTextureRec(sprite, animationBounds, drawPosition, WHITE);
+
+    // Rectangle collisionBounds = GetCollisionBounds();
+    // DrawRectangleRec(collisionBounds, WHITE);
 }
 
 Vector2 Player::GetDrawPosition()

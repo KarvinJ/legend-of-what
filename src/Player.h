@@ -21,5 +21,9 @@ public:
     int score;
 
 private:
+    Rectangle animationBounds;
     int speed;
+    int framesCounter;
+    int framesSpeed;
+    int currentFrame;
 };
