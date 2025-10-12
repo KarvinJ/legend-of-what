@@ -49,6 +49,11 @@ void Player::Draw()
     DrawRectangleRec(collisionBounds, WHITE);
 }
 
+Vector2 Player::GetDrawPosition()
+{
+    return {bounds.x - bounds.width / 4, bounds.y - bounds.height / 4};
+}
+
 Rectangle Player::GetCollisionBounds()
 {
     return {
@@ -56,11 +61,6 @@ Rectangle Player::GetCollisionBounds()
         bounds.y,
         bounds.width / 2,
         bounds.height / 2};
-}
-
-Vector2 Player::GetDrawPosition()
-{
-    return {bounds.x - bounds.width / 4, bounds.y - bounds.height / 4};
 }
 
 Rectangle Player::GetPreviousPosition()

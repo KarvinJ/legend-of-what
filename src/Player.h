@@ -9,8 +9,8 @@ public:
     Player(float positionX, float positionY, const std::string &spritePath);
     void Update(float deltaTime);
     void Draw();
-    Rectangle GetCollisionBounds();
     Vector2 GetDrawPosition();
+    Rectangle GetCollisionBounds();
     Rectangle GetPreviousPosition();
     void Dispose();
 
