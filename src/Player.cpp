@@ -42,9 +42,10 @@ void Player::Update(float deltaTime)
 
 void Player::Draw()
 {
+    Vector2 drawPosition = GetDrawPosition();
+    DrawTextureRec(sprite, {0, 0, 64, 80}, drawPosition, WHITE);
+    
     Rectangle collisionBounds = GetCollisionBounds();
-
-    DrawTextureRec(sprite, {0, 0, 64, 80}, {bounds.x - bounds.width / 2 / 2, bounds.y - bounds.height / 2 / 2}, WHITE);
     DrawRectangleRec(collisionBounds, WHITE);
 }
 
@@ -55,6 +56,11 @@ Rectangle Player::GetCollisionBounds()
         bounds.y,
         bounds.width / 2,
         bounds.height / 2};
+}
+
+Vector2 Player::GetDrawPosition()
+{
+    return {bounds.x - bounds.width / 4, bounds.y - bounds.height / 4};
 }
 
 Rectangle Player::GetPreviousPosition()
