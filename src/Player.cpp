@@ -32,7 +32,6 @@ Player::Player(float positionX, float positionY, Texture2D &spriteSheet, unorder
 
     speed = 50;
     velocity = {0, 0};
-    score = 0;
     framesCounter = 0;
     framesSpeed = 6;
     currentFrame = 0;
