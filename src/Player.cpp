@@ -28,6 +28,9 @@ Player::Player(float positionX, float positionY, Texture2D &sprite, vector<Textu
 
     currentAnimationBounds = idleAnimationBounds;
 
+    previousState = STANDING;
+    actualState = STANDING;
+
     speed = 50;
     velocity = {0, 0};
     score = 0;
@@ -98,21 +101,21 @@ void Player::Draw()
     Vector2 drawPosition = GetDrawPosition();
 
     Rectangle tempBounds = currentAnimationBounds;
-    //need to work in my animation system. 
-    // if (IsKeyDown(KEY_D))
-    // {
-    //     currentAnimationBounds = runningAnimationBounds;
-    //     tempBounds.width = currentAnimationBounds.width;
-    // }
-    // else if (IsKeyDown(KEY_A))
-    // {
-    //     currentAnimationBounds = runningAnimationBounds;
-    //     tempBounds.width = -currentAnimationBounds.width;
-    // }
-    // else
-    // {
-    //     currentAnimationBounds = idleAnimationBounds;
-    // }
+    // need to work in my animation system.
+    //  if (IsKeyDown(KEY_D))
+    //  {
+    //      currentAnimationBounds = runningAnimationBounds;
+    //      tempBounds.width = currentAnimationBounds.width;
+    //  }
+    //  else if (IsKeyDown(KEY_A))
+    //  {
+    //      currentAnimationBounds = runningAnimationBounds;
+    //      tempBounds.width = -currentAnimationBounds.width;
+    //  }
+    //  else
+    //  {
+    //      currentAnimationBounds = idleAnimationBounds;
+    //  }
 
     DrawTextureRec(sprite, tempBounds, drawPosition, WHITE);
 

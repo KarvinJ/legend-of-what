@@ -29,6 +29,9 @@ private:
     Rectangle idleAnimationBounds;
     TextureInfo runningAnimation;
     Rectangle runningAnimationBounds;
+    enum AnimationState {STANDING, JUMPING, RUNNING};
+    AnimationState actualState;
+    AnimationState previousState;
     int speed;
     int framesCounter;
     int framesSpeed;
