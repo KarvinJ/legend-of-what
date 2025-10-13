@@ -8,7 +8,7 @@ class Player
 {
 public:
     Player();
-    Player(float positionX, float positionY, Texture2D &sprite, vector<TextureInfo> textureInfos);
+    Player(float positionX, float positionY, Texture2D &sprite, vector<TextureInfo> &textureInfos);
     void Update(float deltaTime);
     void Draw();
     Vector2 GetDrawPosition();
@@ -23,8 +23,12 @@ public:
     int score;
 
 private:
-    Rectangle animationBounds;
-    TextureInfo textureInfo;
+    vector<TextureInfo> textureInfos;
+    Rectangle currentAnimationBounds;
+    TextureInfo idleAnimation;
+    Rectangle idleAnimationBounds;
+    TextureInfo runningAnimation;
+    Rectangle runningAnimationBounds;
     int speed;
     int framesCounter;
     int framesSpeed;

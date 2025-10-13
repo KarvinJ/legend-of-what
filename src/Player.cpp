@@ -4,15 +4,30 @@ Player::Player()
 {
 }
 
-Player::Player(float positionX, float positionY, Texture2D &sprite, vector<TextureInfo> textureInfos)
+Player::Player(float positionX, float positionY, Texture2D &sprite, vector<TextureInfo> &textureInfos)
 {
     this->sprite = sprite;
+    this->textureInfos = textureInfos;
 
-    textureInfo = getTextureInfoByName(textureInfos, "idle");
+    idleAnimation = getTextureInfoByName(textureInfos, "idle");
+    bounds = {positionX, positionY, (float)idleAnimation.bounds.width / 4, (float)idleAnimation.bounds.height};
 
-    bounds = {positionX, positionY, (float)textureInfo.bounds.width / 4, (float)textureInfo.bounds.height};
+    idleAnimationBounds = {
+        idleAnimation.bounds.x,
+        idleAnimation.bounds.y,
+        (float)idleAnimation.bounds.width / 4,
+        (float)idleAnimation.bounds.height};
 
-    animationBounds = {textureInfo.bounds.x, textureInfo.bounds.y, (float)textureInfo.bounds.width / 4, (float)textureInfo.bounds.height};
+    runningAnimation = getTextureInfoByName(textureInfos, "run");
+
+    runningAnimationBounds = {
+        runningAnimation.bounds.x,
+        runningAnimation.bounds.y,
+        (float)runningAnimation.bounds.width / 8,
+        (float)runningAnimation.bounds.height};
+
+    currentAnimationBounds = idleAnimationBounds;
+
     speed = 50;
     velocity = {0, 0};
     score = 0;
@@ -28,14 +43,29 @@ void Player::Update(float deltaTime)
     if (framesCounter >= (60 / framesSpeed))
     {
         framesCounter = 0;
-        currentFrame++;
 
-        if (currentFrame > 3)
+        if (IsKeyDown(KEY_A) || IsKeyDown(KEY_D))
         {
-            currentFrame = 0;
-        }
+            currentFrame++;
 
-        animationBounds.x = textureInfo.bounds.x + ((float)currentFrame * (float)animationBounds.width);
+            if (currentFrame > 8)
+            {
+                currentFrame = 0;
+            }
+
+            currentAnimationBounds.x = runningAnimation.bounds.x + ((float)currentFrame * (float)currentAnimationBounds.width);
+        }
+        else
+        {
+            currentFrame++;
+
+            if (currentFrame > 3)
+            {
+                currentFrame = 0;
+            }
+
+            currentAnimationBounds.x = idleAnimation.bounds.x + ((float)currentFrame * (float)currentAnimationBounds.width);
+        }
     }
 
     velocity.y += 20.8f * deltaTime;
@@ -67,15 +97,22 @@ void Player::Draw()
 {
     Vector2 drawPosition = GetDrawPosition();
 
-    Rectangle tempBounds = animationBounds;
-    if (velocity.x > 0)
-    {
-        tempBounds.width = animationBounds.width;
-    }
-    else
-    {
-        tempBounds.width = -animationBounds.width;
-    }
+    Rectangle tempBounds = currentAnimationBounds;
+    //need to work in my animation system. 
+    // if (IsKeyDown(KEY_D))
+    // {
+    //     currentAnimationBounds = runningAnimationBounds;
+    //     tempBounds.width = currentAnimationBounds.width;
+    // }
+    // else if (IsKeyDown(KEY_A))
+    // {
+    //     currentAnimationBounds = runningAnimationBounds;
+    //     tempBounds.width = -currentAnimationBounds.width;
+    // }
+    // else
+    // {
+    //     currentAnimationBounds = idleAnimationBounds;
+    // }
 
     DrawTextureRec(sprite, tempBounds, drawPosition, WHITE);
 
