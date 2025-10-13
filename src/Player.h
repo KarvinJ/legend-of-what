@@ -2,12 +2,13 @@
 #include "SpriteSheetLoader.h"
 #include <raylib.h>
 #include <string>
+#include <vector>
 
 class Player
 {
 public:
     Player();
-    Player(float positionX, float positionY, const std::string &spritePath);
+    Player(float positionX, float positionY, Texture2D &sprite, vector<TextureInfo> textureInfos);
     void Update(float deltaTime);
     void Draw();
     Vector2 GetDrawPosition();

@@ -4,11 +4,9 @@ Player::Player()
 {
 }
 
-Player::Player(float positionX, float positionY, const std::string &spritePath)
+Player::Player(float positionX, float positionY, Texture2D &sprite, vector<TextureInfo> textureInfos)
 {
-    sprite = LoadTexture(spritePath.c_str());
-
-    vector<TextureInfo> textureInfos = loadSpriteSheet("assets/img/characters/character-spritesheet.txt");
+    this->sprite = sprite;
 
     textureInfo = getTextureInfoByName(textureInfos, "idle");
 

@@ -10,7 +10,11 @@ Game::Game()
     SetTargetFPS(60);
     InitAudioDevice();
 
-    player = Player(screenWidth / 2, screenHeight / 2, "assets/img/characters/character-spritesheet.png");
+    vector<TextureInfo> textureInfos = loadSpriteSheet("assets/img/characters/character-spritesheet.txt");
+
+    Texture2D characterSprite = LoadTexture("assets/img/characters/character-spritesheet.png");
+
+    player = Player(screenWidth / 2, screenHeight / 2, characterSprite, textureInfos);
     actionSound = LoadSound("assets/sounds/okay.wav");
 
     collisionBounds = {
@@ -22,7 +26,7 @@ Game::Game()
 
     camera = {0};
     camera.offset = (Vector2){screenWidth / 2.0f, screenHeight / 2.0f + 200}; // this is for control the camera default position
-    camera.target = {player.bounds.x, 600}; // the object that the camera will be following
+    camera.target = {player.bounds.x, 600};                                   // the object that the camera will be following
     camera.rotation = 0.0f;
     camera.zoom = 1.5f;
 
@@ -57,10 +61,10 @@ void Game::Draw()
 
     ClearBackground(BLACK);
 
-    //all the code that should be affected by the camerea, should be put inside BeginMode2D
+    // all the code that should be affected by the camerea, should be put inside BeginMode2D
     BeginMode2D(camera);
 
-    //And here I give the camera the player position for the camera to follow. 
+    // And here I give the camera the player position for the camera to follow.
     camera.target = {player.bounds.x, 600};
 
     for (auto &collisionBound : collisionBounds)
@@ -95,7 +99,7 @@ void Game::ManageStructureCollision(float deltaTime)
     for (auto &platform : collisionBounds)
     {
         Rectangle playerBounds = player.GetCollisionBounds();
-        
+
         if (CheckCollisionRecs(playerBounds, platform))
         {
             if (CheckCollisionInX(player.GetPreviousPosition(), platform))

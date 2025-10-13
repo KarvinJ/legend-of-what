@@ -1,6 +1,7 @@
 #pragma once
 #include <raylib.h>
 #include <vector>
+#include "SpriteSheetLoader.h"
 #include "Player.h"
 
 class Game
