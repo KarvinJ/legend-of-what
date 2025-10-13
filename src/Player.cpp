@@ -8,7 +8,7 @@ Player::Player(float positionX, float positionY, Texture2D &spriteSheet, unorder
 {
     this->spriteSheet = spriteSheet;
 
-    idleAnimationRegion = spriteSheetData["idle"]; 
+    idleAnimationRegion = spriteSheetData["idle"];
     bounds = {positionX, positionY, (float)idleAnimationRegion.width / 4, (float)idleAnimationRegion.height};
 
     idleAnimationBounds = {
@@ -17,7 +17,7 @@ Player::Player(float positionX, float positionY, Texture2D &spriteSheet, unorder
         (float)idleAnimationRegion.width / 4,
         (float)idleAnimationRegion.height};
 
-    runningAnimationRegion = spriteSheetData["run"]; 
+    runningAnimationRegion = spriteSheetData["run"];
 
     runningAnimationBounds = {
         runningAnimationRegion.x,
@@ -97,25 +97,24 @@ void Player::Update(float deltaTime)
 
 void Player::Draw()
 {
-    Vector2 drawPosition = GetDrawPosition();
-
-    Rectangle tempBounds = currentAnimationBounds;
     // need to work in my animation system.
-    //  if (IsKeyDown(KEY_D))
-    //  {
-    //      currentAnimationBounds = runningAnimationBounds;
-    //      tempBounds.width = currentAnimationBounds.width;
-    //  }
-    //  else if (IsKeyDown(KEY_A))
-    //  {
-    //      currentAnimationBounds = runningAnimationBounds;
-    //      tempBounds.width = -currentAnimationBounds.width;
-    //  }
-    //  else
-    //  {
-    //      currentAnimationBounds = idleAnimationBounds;
-    //  }
+    Rectangle tempBounds = currentAnimationBounds;
+    if (IsKeyDown(KEY_D))
+    {
+        currentAnimationBounds = runningAnimationBounds;
+        tempBounds.width = currentAnimationBounds.width;
+    }
+    else if (IsKeyDown(KEY_A))
+    {
+        currentAnimationBounds = runningAnimationBounds;
+        tempBounds.width = -currentAnimationBounds.width;
+    }
+    else
+    {
+        currentAnimationBounds = idleAnimationBounds;
+    }
 
+    Vector2 drawPosition = GetDrawPosition();
     DrawTextureRec(spriteSheet, tempBounds, drawPosition, WHITE);
 
     // Rectangle collisionBounds = GetCollisionBounds();
