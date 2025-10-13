@@ -10,12 +10,12 @@ Game::Game()
     SetTargetFPS(60);
     InitAudioDevice();
 
-    vector<TextureInfo> textureInfos = loadSpriteSheet("assets/img/characters/character-spritesheet.txt");
-
-    Texture2D characterSprite = LoadTexture("assets/img/characters/character-spritesheet.png");
-
-    player = Player(screenWidth / 2, screenHeight / 2, characterSprite, textureInfos);
     actionSound = LoadSound("assets/sounds/okay.wav");
+
+    Texture2D spriteSheet = LoadTexture("assets/img/characters/character-spritesheet.png");
+    unordered_map<string, Rectangle> spriteSheetData = loadSpriteSheetData("assets/img/characters/character-spritesheet.txt");
+
+    player = Player(screenWidth / 2, screenHeight / 2, spriteSheet, spriteSheetData);
 
     collisionBounds = {
         {0, screenHeight - 64, screenWidth, 128},

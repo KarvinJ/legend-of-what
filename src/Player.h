@@ -8,7 +8,7 @@ class Player
 {
 public:
     Player();
-    Player(float positionX, float positionY, Texture2D &sprite, vector<TextureInfo> &textureInfos);
+    Player(float positionX, float positionY, Texture2D &spriteSheet, unordered_map<string, Rectangle> &spriteSheetData);
     void Update(float deltaTime);
     void Draw();
     Vector2 GetDrawPosition();
@@ -18,16 +18,15 @@ public:
 
 public:
     Rectangle bounds;
-    Texture2D sprite;
+    Texture2D spriteSheet;
     Vector2 velocity;
     int score;
 
 private:
-    vector<TextureInfo> textureInfos;
     Rectangle currentAnimationBounds;
-    TextureInfo idleAnimation;
+    Rectangle idleAnimationRegion;
     Rectangle idleAnimationBounds;
-    TextureInfo runningAnimation;
+    Rectangle runningAnimationRegion;
     Rectangle runningAnimationBounds;
     enum AnimationState {STANDING, JUMPING, RUNNING};
     AnimationState actualState;

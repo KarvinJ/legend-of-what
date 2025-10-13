@@ -4,27 +4,26 @@ Player::Player()
 {
 }
 
-Player::Player(float positionX, float positionY, Texture2D &sprite, vector<TextureInfo> &textureInfos)
+Player::Player(float positionX, float positionY, Texture2D &spriteSheet, unordered_map<string, Rectangle> &spriteSheetData)
 {
-    this->sprite = sprite;
-    this->textureInfos = textureInfos;
+    this->spriteSheet = spriteSheet;
 
-    idleAnimation = getTextureInfoByName(textureInfos, "idle");
-    bounds = {positionX, positionY, (float)idleAnimation.bounds.width / 4, (float)idleAnimation.bounds.height};
+    idleAnimationRegion = spriteSheetData["idle"]; 
+    bounds = {positionX, positionY, (float)idleAnimationRegion.width / 4, (float)idleAnimationRegion.height};
 
     idleAnimationBounds = {
-        idleAnimation.bounds.x,
-        idleAnimation.bounds.y,
-        (float)idleAnimation.bounds.width / 4,
-        (float)idleAnimation.bounds.height};
+        idleAnimationRegion.x,
+        idleAnimationRegion.y,
+        (float)idleAnimationRegion.width / 4,
+        (float)idleAnimationRegion.height};
 
-    runningAnimation = getTextureInfoByName(textureInfos, "run");
+    runningAnimationRegion = spriteSheetData["run"]; 
 
     runningAnimationBounds = {
-        runningAnimation.bounds.x,
-        runningAnimation.bounds.y,
-        (float)runningAnimation.bounds.width / 8,
-        (float)runningAnimation.bounds.height};
+        runningAnimationRegion.x,
+        runningAnimationRegion.y,
+        (float)runningAnimationRegion.width / 8,
+        (float)runningAnimationRegion.height};
 
     currentAnimationBounds = idleAnimationBounds;
 
@@ -56,7 +55,7 @@ void Player::Update(float deltaTime)
                 currentFrame = 0;
             }
 
-            currentAnimationBounds.x = runningAnimation.bounds.x + ((float)currentFrame * (float)currentAnimationBounds.width);
+            currentAnimationBounds.x = runningAnimationRegion.x + ((float)currentFrame * (float)currentAnimationBounds.width);
         }
         else
         {
@@ -67,7 +66,7 @@ void Player::Update(float deltaTime)
                 currentFrame = 0;
             }
 
-            currentAnimationBounds.x = idleAnimation.bounds.x + ((float)currentFrame * (float)currentAnimationBounds.width);
+            currentAnimationBounds.x = idleAnimationRegion.x + ((float)currentFrame * (float)currentAnimationBounds.width);
         }
     }
 
@@ -117,7 +116,7 @@ void Player::Draw()
     //      currentAnimationBounds = idleAnimationBounds;
     //  }
 
-    DrawTextureRec(sprite, tempBounds, drawPosition, WHITE);
+    DrawTextureRec(spriteSheet, tempBounds, drawPosition, WHITE);
 
     // Rectangle collisionBounds = GetCollisionBounds();
     // DrawRectangleRec(collisionBounds, WHITE);
@@ -149,5 +148,5 @@ Rectangle Player::GetPreviousPosition()
 
 void Player::Dispose()
 {
-    UnloadTexture(sprite);
+    UnloadTexture(spriteSheet);
 }

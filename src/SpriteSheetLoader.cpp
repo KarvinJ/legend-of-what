@@ -1,14 +1,14 @@
 #include "SpriteSheetLoader.h"
 #include <fstream>
 
-vector<TextureInfo> loadSpriteSheet(string path)
+unordered_map<string, Rectangle> loadSpriteSheetData(string path)
 {
-    vector<TextureInfo> textureInfo;
-    textureInfo.reserve(4);
+    unordered_map<string, Rectangle> spriteSheetData;
+    spriteSheetData.reserve(4);
 
-    std::ifstream textureTextInfo(path);
+    std::ifstream spriteDataFile(path);
 
-    for (string line; getline(textureTextInfo, line);)
+    for (string line; getline(spriteDataFile, line);)
     {
         auto list = customSplit(line, ',');
 
@@ -20,12 +20,12 @@ vector<TextureInfo> loadSpriteSheet(string path)
 
         Rectangle bounds = {(float)x, (float)y, (float)width, (float)height};
 
-        textureInfo.push_back({name, bounds});
+        spriteSheetData[name] = bounds;
     }
 
-    textureTextInfo.close();
+    spriteDataFile.close();
 
-    return textureInfo;
+    return spriteSheetData;
 }
 
 vector<string> customSplit(string &str, char separator)
@@ -46,19 +46,4 @@ vector<string> customSplit(string &str, char separator)
     }
 
     return strings;
-}
-
-TextureInfo getTextureInfoByName(vector<TextureInfo> textureInfos, string name)
-{
-    TextureInfo actualTextureInfo;
-    for (auto &textureInfo : textureInfos)
-    {
-        if (textureInfo.name.compare(name) == 0)
-        {
-            actualTextureInfo = textureInfo;
-            break;
-        }
-    }
-
-    return actualTextureInfo;
 }

@@ -2,18 +2,12 @@
 #include <raylib.h>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 using std::string;
 using std::vector;
+using std::unordered_map;
 
-typedef struct
-{
-    string name;
-    Rectangle bounds;
-} TextureInfo;
-
-vector<TextureInfo> loadSpriteSheet(string path);
+unordered_map<string, Rectangle> loadSpriteSheetData(string path);
 
 vector<string> customSplit(string &str, char separator);
-
-TextureInfo getTextureInfoByName(vector<TextureInfo> textureInfos, string name);
