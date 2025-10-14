@@ -148,3 +148,8 @@ void Player::Dispose()
 {
     UnloadTexture(spriteSheet);
 }
+
+Player::AnimationState Player::GetCurrentState()
+{
+    return Player::STANDING;
+}

@@ -33,6 +33,8 @@ private:
         JUMPING,
         RUNNING
     };
+
+    AnimationState GetCurrentState();
     AnimationState actualState;
     AnimationState previousState;
     int speed;
