@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <iostream>
 
 Player::Player()
 {
@@ -96,23 +97,18 @@ void Player::Update(float deltaTime)
 
 void Player::Draw()
 {
-    // need to work in my animation system.
-    // currentAnimationBounds = GetCurrentAnimationBounds();
 
-    // if (IsKeyDown(KEY_D))
-    // {
-    //     currentAnimationBounds = runningAnimationBounds;
-    //     tempBounds.width = currentAnimationBounds.width;
-    // }
-    // else if (IsKeyDown(KEY_A))
-    // {
-    //     currentAnimationBounds = runningAnimationBounds;
-    //     tempBounds.width = -currentAnimationBounds.width;
-    // }
-    // else
-    // {
-    //     currentAnimationBounds = idleAnimationBounds;
-    // }
+    // it's changing state correctly.
+    if (actualState == Player::RUNNING)
+    {
+        DrawText("Running", 400, 300, 48, WHITE);
+    }
+    else
+    {
+        DrawText("Standing", 400, 300, 48, WHITE);
+    }
+
+    ManageCurrentAnimationBounds();
 
     Vector2 drawPosition = GetDrawPosition();
     DrawTextureRec(spriteSheet, currentAnimationBounds, drawPosition, WHITE);
@@ -160,7 +156,6 @@ Player::AnimationState Player::GetCurrentAnimationState()
     return Player::STANDING;
 }
 
-// It seems that nothing work with this method
 void Player::ManageCurrentAnimationBounds()
 {
     actualState = GetCurrentAnimationState();
