@@ -33,7 +33,8 @@ private:
     Rectangle idleAnimationBounds;
     Rectangle runningAnimationRegion;
     Rectangle runningAnimationBounds;
-    AnimationState GetCurrentState();
+    AnimationState GetCurrentAnimationState();
+    void ManageCurrentAnimationBounds();
     AnimationState actualState;
     AnimationState previousState;
     int speed;

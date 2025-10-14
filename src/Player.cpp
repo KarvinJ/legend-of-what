@@ -27,8 +27,8 @@ Player::Player(float positionX, float positionY, Texture2D &spriteSheet, unorder
 
     currentAnimationBounds = idleAnimationBounds;
 
-    previousState = STANDING;
-    actualState = STANDING;
+    previousState = Player::STANDING;
+    actualState = Player::STANDING;
 
     speed = 50;
     velocity = {0, 0};
@@ -45,7 +45,7 @@ void Player::Update(float deltaTime)
     {
         framesCounter = 0;
 
-        if (IsKeyDown(KEY_A) || IsKeyDown(KEY_D))
+        if (actualState == Player::RUNNING)
         {
             currentFrame++;
 
@@ -97,24 +97,25 @@ void Player::Update(float deltaTime)
 void Player::Draw()
 {
     // need to work in my animation system.
-    Rectangle tempBounds = currentAnimationBounds;
-    if (IsKeyDown(KEY_D))
-    {
-        currentAnimationBounds = runningAnimationBounds;
-        tempBounds.width = currentAnimationBounds.width;
-    }
-    else if (IsKeyDown(KEY_A))
-    {
-        currentAnimationBounds = runningAnimationBounds;
-        tempBounds.width = -currentAnimationBounds.width;
-    }
-    else
-    {
-        currentAnimationBounds = idleAnimationBounds;
-    }
+    // currentAnimationBounds = GetCurrentAnimationBounds();
+
+    // if (IsKeyDown(KEY_D))
+    // {
+    //     currentAnimationBounds = runningAnimationBounds;
+    //     tempBounds.width = currentAnimationBounds.width;
+    // }
+    // else if (IsKeyDown(KEY_A))
+    // {
+    //     currentAnimationBounds = runningAnimationBounds;
+    //     tempBounds.width = -currentAnimationBounds.width;
+    // }
+    // else
+    // {
+    //     currentAnimationBounds = idleAnimationBounds;
+    // }
 
     Vector2 drawPosition = GetDrawPosition();
-    DrawTextureRec(spriteSheet, tempBounds, drawPosition, WHITE);
+    DrawTextureRec(spriteSheet, currentAnimationBounds, drawPosition, WHITE);
 
     // Rectangle collisionBounds = GetCollisionBounds();
     // DrawRectangleRec(collisionBounds, WHITE);
@@ -149,7 +150,41 @@ void Player::Dispose()
     UnloadTexture(spriteSheet);
 }
 
-Player::AnimationState Player::GetCurrentState()
+Player::AnimationState Player::GetCurrentAnimationState()
 {
+    bool isPlayerMoving = IsKeyDown(KEY_A) || IsKeyDown(KEY_D);
+
+    if (isPlayerMoving)
+        return Player::RUNNING;
+
     return Player::STANDING;
+}
+
+// It seems that nothing work with this method
+void Player::ManageCurrentAnimationBounds()
+{
+    actualState = GetCurrentAnimationState();
+
+    switch (actualState)
+    {
+
+    case RUNNING:
+        currentAnimationBounds = runningAnimationBounds;
+        break;
+
+    default:
+        currentAnimationBounds = idleAnimationBounds;
+    }
+
+    if (IsKeyDown(KEY_D))
+    {
+        currentAnimationBounds.width = currentAnimationBounds.width;
+    }
+
+    else if (IsKeyDown(KEY_A))
+    {
+        currentAnimationBounds.width = -currentAnimationBounds.width;
+    }
+
+    previousState = actualState;
 }
