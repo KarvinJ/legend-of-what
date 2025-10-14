@@ -19,6 +19,12 @@ public:
 public:
     Rectangle bounds;
     Vector2 velocity;
+    enum AnimationState
+    {
+        STANDING,
+        JUMPING,
+        RUNNING
+    };
 
 private:
     Texture2D spriteSheet;
@@ -27,13 +33,6 @@ private:
     Rectangle idleAnimationBounds;
     Rectangle runningAnimationRegion;
     Rectangle runningAnimationBounds;
-    enum AnimationState
-    {
-        STANDING,
-        JUMPING,
-        RUNNING
-    };
-
     AnimationState GetCurrentState();
     AnimationState actualState;
     AnimationState previousState;
