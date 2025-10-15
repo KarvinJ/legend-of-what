@@ -148,6 +148,8 @@ void Player::Draw()
     }
     else
     {
+        // int value = GetMonitorRefreshRate(0);
+        // DrawText(TextFormat("value: %i", value), 400, 400, 32, WHITE);
         DrawText("Standing", 400, 400, 32, WHITE);
     }
 
