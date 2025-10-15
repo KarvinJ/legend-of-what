@@ -26,8 +26,6 @@ Player::Player(float positionX, float positionY, Texture2D &spriteSheet, unorder
         (float)runningAnimationRegion.width / 8,
         (float)runningAnimationRegion.height};
 
-    currentAnimationBounds = idleAnimationBounds;
-
     previousState = Player::STANDING;
     actualState = Player::STANDING;
 
@@ -36,6 +34,18 @@ Player::Player(float positionX, float positionY, Texture2D &spriteSheet, unorder
     framesCounter = 0;
     framesSpeed = 6;
     currentFrame = 0;
+}
+
+void Player::HandleAnimationByBounds(Rectangle &animationBounds, float initialXposition, int totalFrames, int &currentFrame)
+{
+    currentFrame++;
+
+    if (currentFrame > totalFrames)
+    {
+        currentFrame = 0;
+    }
+
+    animationBounds.x = initialXposition + ((float)currentFrame * (float)animationBounds.width);
 }
 
 void Player::Update(float deltaTime)
@@ -48,25 +58,11 @@ void Player::Update(float deltaTime)
 
         if (actualState == Player::RUNNING)
         {
-            currentFrame++;
-
-            if (currentFrame > 8)
-            {
-                currentFrame = 0;
-            }
-
-            currentAnimationBounds.x = runningAnimationRegion.x + ((float)currentFrame * (float)currentAnimationBounds.width);
+            HandleAnimationByBounds(runningAnimationBounds, runningAnimationRegion.x, 7, currentFrame);
         }
         else
         {
-            currentFrame++;
-
-            if (currentFrame > 3)
-            {
-                currentFrame = 0;
-            }
-
-            currentAnimationBounds.x = idleAnimationRegion.x + ((float)currentFrame * (float)currentAnimationBounds.width);
+            HandleAnimationByBounds(idleAnimationBounds, idleAnimationRegion.x, 3, currentFrame);
         }
     }
 
@@ -97,8 +93,6 @@ void Player::Update(float deltaTime)
 
 void Player::Draw()
 {
-
-    // it's changing state correctly.
     if (actualState == Player::RUNNING)
     {
         DrawText("Running", 400, 300, 48, WHITE);
@@ -108,10 +102,10 @@ void Player::Draw()
         DrawText("Standing", 400, 300, 48, WHITE);
     }
 
-    ManageCurrentAnimationBounds();
-
+    Rectangle currentAni = GetCurrentAnimationBounds();
     Vector2 drawPosition = GetDrawPosition();
-    DrawTextureRec(spriteSheet, currentAnimationBounds, drawPosition, WHITE);
+
+    DrawTextureRec(spriteSheet, currentAni, drawPosition, WHITE);
 
     // Rectangle collisionBounds = GetCollisionBounds();
     // DrawRectangleRec(collisionBounds, WHITE);
@@ -156,9 +150,11 @@ Player::AnimationState Player::GetCurrentAnimationState()
     return Player::STANDING;
 }
 
-void Player::ManageCurrentAnimationBounds()
+Rectangle Player::GetCurrentAnimationBounds()
 {
     actualState = GetCurrentAnimationState();
+
+    Rectangle currentAnimationBounds;
 
     switch (actualState)
     {
@@ -182,4 +178,6 @@ void Player::ManageCurrentAnimationBounds()
     }
 
     previousState = actualState;
+
+    return currentAnimationBounds;
 }

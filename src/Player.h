@@ -28,13 +28,13 @@ public:
 
 private:
     Texture2D spriteSheet;
-    Rectangle currentAnimationBounds;
     Rectangle idleAnimationRegion;
     Rectangle idleAnimationBounds;
     Rectangle runningAnimationRegion;
     Rectangle runningAnimationBounds;
     AnimationState GetCurrentAnimationState();
-    void ManageCurrentAnimationBounds();
+    Rectangle GetCurrentAnimationBounds();
+    void HandleAnimationByBounds(Rectangle &animationBounds, float initialXposition, int totalFrames, int &currentFrame);
     AnimationState actualState;
     AnimationState previousState;
     int speed;
