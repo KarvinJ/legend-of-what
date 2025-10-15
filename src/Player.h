@@ -25,9 +25,12 @@ public:
         RUNNING,
         JUMPING,
         FALLING,
+        DYING,
     };
 
 private:
+    bool isDead;
+    float deadTimer;
     Texture2D spriteSheet;
     Rectangle idleAnimationRegion;
     Rectangle idleAnimationBounds;
@@ -35,6 +38,8 @@ private:
     Rectangle runningAnimationBounds;
     Rectangle jumpingAnimationRegion;
     Rectangle jumpingAnimationBounds;
+    Rectangle dyingAnimationRegion;
+    Rectangle dyingAnimationBounds;
     AnimationState GetCurrentAnimationState();
     Rectangle GetCurrentAnimationBounds();
     void HandleAnimationByBounds(Rectangle &animationBounds, float initialXposition, int totalFrames, int &currentFrame, int &frameCounter, int frameSpeed);

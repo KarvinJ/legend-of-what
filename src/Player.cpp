@@ -8,6 +8,8 @@ Player::Player()
 Player::Player(float positionX, float positionY, Texture2D &spriteSheet, unordered_map<string, Rectangle> &spriteSheetData)
 {
     this->spriteSheet = spriteSheet;
+    isDead = true;
+    deadTimer = 0;
 
     idleAnimationRegion = spriteSheetData["idle"];
     bounds = {positionX, positionY, (float)idleAnimationRegion.width / 4, (float)idleAnimationRegion.height};
@@ -34,6 +36,14 @@ Player::Player(float positionX, float positionY, Texture2D &spriteSheet, unorder
         (float)jumpingAnimationRegion.width / 15,
         (float)jumpingAnimationRegion.height};
 
+    dyingAnimationRegion = spriteSheetData["dead"];
+
+    dyingAnimationBounds = {
+        dyingAnimationRegion.x,
+        dyingAnimationRegion.y,
+        (float)dyingAnimationRegion.width / 8,
+        (float)dyingAnimationRegion.height};
+
     previousState = Player::STANDING;
     actualState = Player::STANDING;
 
@@ -54,7 +64,14 @@ void Player::HandleAnimationByBounds(Rectangle &animationBounds, float initialXp
 
         if (currentFrame >= totalFrames)
         {
-            currentFrame = 0;
+            if (isDead)
+            {
+                currentFrame = totalFrames - 1;
+            }
+            else
+            {
+                currentFrame = 0;
+            }
         }
 
         animationBounds.x = initialXposition + ((float)currentFrame * (float)animationBounds.width);
@@ -68,23 +85,38 @@ void Player::Update(float deltaTime)
     bounds.y += velocity.y;
     bounds.x += velocity.x;
 
-    if (IsKeyDown(KEY_D))
+    if (!isDead)
     {
-        velocity.x += speed * deltaTime;
+        if (IsKeyDown(KEY_D))
+        {
+            velocity.x += speed * deltaTime;
+        }
+
+        else if (IsKeyDown(KEY_A))
+        {
+            velocity.x -= speed * deltaTime;
+        }
+
+        velocity.x *= 0.9f;
+
+        if (bounds.y > 1280)
+        {
+            bounds.y = 400 - bounds.height;
+            bounds.x = 500;
+            velocity.y = 0;
+        }
     }
-
-    else if (IsKeyDown(KEY_A))
+    else
     {
-        velocity.x -= speed * deltaTime;
-    }
+        deadTimer += deltaTime;
 
-    velocity.x *= 0.9f;
+        if (deadTimer >= 2)
+        {
 
-    if (bounds.y > 1280)
-    {
-        bounds.y = 400 - bounds.height;
-        bounds.x = 500;
-        velocity.y = 0;
+            isDead = false;
+            deadTimer = 0;
+            actualState = Player::STANDING;
+        }
     }
 }
 
@@ -97,6 +129,10 @@ void Player::Draw()
     else if (actualState == Player::JUMPING)
     {
         DrawText("Jumping", 400, 400, 32, WHITE);
+    }
+    else if (actualState == Player::DYING)
+    {
+        DrawText("Dying", 400, 400, 32, WHITE);
     }
     else
     {
@@ -112,6 +148,10 @@ void Player::Draw()
     else if (actualState == Player::JUMPING)
     {
         HandleAnimationByBounds(jumpingAnimationBounds, jumpingAnimationRegion.x, 15, currentFrame, framesCounter, framesSpeed);
+    }
+    else if (actualState == Player::DYING)
+    {
+        HandleAnimationByBounds(dyingAnimationBounds, dyingAnimationRegion.x, 8, currentFrame, framesCounter, framesSpeed);
     }
     else
     {
@@ -158,7 +198,10 @@ void Player::Dispose()
 
 Player::AnimationState Player::GetCurrentAnimationState()
 {
-    if (velocity.y < 0 || (velocity.y > 0 && previousState == Player::JUMPING))
+    if (isDead)
+        return Player::DYING;
+
+    else if (velocity.y < 0 || (velocity.y > 0 && previousState == Player::JUMPING))
         return Player::JUMPING;
 
     else if (velocity.y > 0)
@@ -179,6 +222,10 @@ Rectangle Player::GetCurrentAnimationBounds()
     switch (actualState)
     {
 
+    case DYING:
+        currentAnimationBounds = dyingAnimationBounds;
+        break;
+
     case RUNNING:
         currentAnimationBounds = runningAnimationBounds;
         break;
@@ -193,12 +240,12 @@ Rectangle Player::GetCurrentAnimationBounds()
         currentAnimationBounds = idleAnimationBounds;
     }
 
-    if (IsKeyDown(KEY_D))
+    if (!isDead && IsKeyDown(KEY_D))
     {
         currentAnimationBounds.width = currentAnimationBounds.width;
     }
 
-    else if (IsKeyDown(KEY_A))
+    else if (!isDead && IsKeyDown(KEY_A))
     {
         currentAnimationBounds.width = -currentAnimationBounds.width;
     }
