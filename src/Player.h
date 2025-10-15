@@ -25,6 +25,7 @@ public:
         RUNNING,
         JUMPING,
         FALLING,
+        ATTACKING,
         DYING,
     };
 
@@ -40,6 +41,8 @@ private:
     Rectangle jumpingAnimationBounds;
     Rectangle dyingAnimationRegion;
     Rectangle dyingAnimationBounds;
+    Rectangle attackingAnimationRegion;
+    Rectangle attackingAnimationBounds;
     AnimationState GetCurrentAnimationState();
     Rectangle GetCurrentAnimationBounds();
     void HandleAnimationByBounds(Rectangle &animationBounds, float initialXposition, int totalFrames, int &currentFrame, int &frameCounter, int frameSpeed);

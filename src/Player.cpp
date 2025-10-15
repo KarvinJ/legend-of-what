@@ -8,7 +8,7 @@ Player::Player()
 Player::Player(float positionX, float positionY, Texture2D &spriteSheet, unordered_map<string, Rectangle> &spriteSheetData)
 {
     this->spriteSheet = spriteSheet;
-    isDead = true;
+    isDead = false;
     deadTimer = 0;
 
     idleAnimationRegion = spriteSheetData["idle"];
@@ -43,6 +43,14 @@ Player::Player(float positionX, float positionY, Texture2D &spriteSheet, unorder
         dyingAnimationRegion.y,
         (float)dyingAnimationRegion.width / 8,
         (float)dyingAnimationRegion.height};
+
+    attackingAnimationRegion = spriteSheetData["attack"];
+
+    attackingAnimationBounds = {
+        attackingAnimationRegion.x,
+        attackingAnimationRegion.y,
+        (float)attackingAnimationRegion.width / 8,
+        (float)attackingAnimationRegion.height};
 
     previousState = Player::STANDING;
     actualState = Player::STANDING;
@@ -133,6 +141,10 @@ void Player::Draw()
     else if (actualState == Player::DYING)
     {
         DrawText("Dying", 400, 400, 32, WHITE);
+    }
+    else if (actualState == Player::ATTACKING)
+    {
+        DrawText("Attacking", 400, 400, 32, WHITE);
     }
     else
     {
