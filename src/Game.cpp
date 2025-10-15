@@ -20,8 +20,8 @@ Game::Game()
     collisionBounds = {
         {0, screenHeight - 64, screenWidth, 128},
         {screenWidth / 2, screenHeight - 180, 64, 128},
-        {screenWidth / 2 + 140, screenHeight - 200, 128, 64},
-        {screenWidth / 2 - 200, screenHeight - 200, 128, 64},
+        {screenWidth / 2 + 140, screenHeight - 180, 128, 64},
+        {screenWidth / 2 - 200, screenHeight - 180, 128, 64},
     };
 
     camera = {0};
@@ -111,7 +111,7 @@ void Game::ManageStructureCollision(float deltaTime)
 
                     if (IsKeyPressed(KEY_SPACE))
                     {
-                        player.velocity.y = -600 * deltaTime;
+                        player.velocity.y = -550 * deltaTime;
                     }
                 }
 
