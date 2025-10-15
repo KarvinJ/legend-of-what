@@ -167,6 +167,10 @@ void Player::Draw()
     {
         HandleAnimationByBounds(dyingAnimationBounds, dyingAnimationRegion.x, 8, currentFrame, framesCounter, framesSpeed);
     }
+    else if (actualState == Player::ATTACKING)
+    {
+        HandleAnimationByBounds(attackingAnimationBounds, attackingAnimationRegion.x, 8, currentFrame, framesCounter, framesSpeed);
+    }
     else
     {
         HandleAnimationByBounds(idleAnimationBounds, idleAnimationRegion.x, 4, currentFrame, framesCounter, framesSpeed);
@@ -218,6 +222,9 @@ Player::AnimationState Player::GetCurrentAnimationState()
     else if (velocity.y < 0 || (velocity.y > 0 && previousState == Player::JUMPING))
         return Player::JUMPING;
 
+    else if (IsKeyDown(KEY_E))
+        return Player::ATTACKING;
+
     else if (velocity.y > 0)
         return Player::FALLING;
 
@@ -238,6 +245,10 @@ Rectangle Player::GetCurrentAnimationBounds()
 
     case DYING:
         currentAnimationBounds = dyingAnimationBounds;
+        break;
+
+    case ATTACKING:
+        currentAnimationBounds = attackingAnimationBounds;
         break;
 
     case RUNNING:
