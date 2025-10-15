@@ -26,6 +26,14 @@ Player::Player(float positionX, float positionY, Texture2D &spriteSheet, unorder
         (float)runningAnimationRegion.width / 8,
         (float)runningAnimationRegion.height};
 
+    jumpingAnimationRegion = spriteSheetData["jump"];
+
+    jumpingAnimationBounds = {
+        jumpingAnimationRegion.x,
+        jumpingAnimationRegion.y,
+        (float)jumpingAnimationRegion.width / 15,
+        (float)jumpingAnimationRegion.height};
+
     previousState = Player::STANDING;
     actualState = Player::STANDING;
 
@@ -36,16 +44,21 @@ Player::Player(float positionX, float positionY, Texture2D &spriteSheet, unorder
     currentFrame = 0;
 }
 
-void Player::HandleAnimationByBounds(Rectangle &animationBounds, float initialXposition, int totalFrames, int &currentFrame)
+void Player::HandleAnimationByBounds(Rectangle &animationBounds, float initialXposition, int totalFrames, int &currentFrame, int &frameCounter, int actualFrameSpeed)
 {
-    currentFrame++;
-
-    if (currentFrame > totalFrames)
+    if (framesCounter >= (60 / actualFrameSpeed))
     {
-        currentFrame = 0;
-    }
+        framesCounter = 0;
 
-    animationBounds.x = initialXposition + ((float)currentFrame * (float)animationBounds.width);
+        currentFrame++;
+
+        if (currentFrame >= totalFrames)
+        {
+            currentFrame = 0;
+        }
+
+        animationBounds.x = initialXposition + ((float)currentFrame * (float)animationBounds.width);
+    }
 }
 
 void Player::Update(float deltaTime)
@@ -79,27 +92,30 @@ void Player::Draw()
 {
     if (actualState == Player::RUNNING)
     {
-        DrawText("Running", 400, 300, 48, WHITE);
+        DrawText("Running", 400, 400, 32, WHITE);
+    }
+    else if (actualState == Player::JUMPING)
+    {
+        DrawText("Jumping", 400, 400, 32, WHITE);
     }
     else
     {
-        DrawText("Standing", 400, 300, 48, WHITE);
+        DrawText("Standing", 400, 400, 32, WHITE);
     }
 
     framesCounter++;
 
-    if (framesCounter >= (60 / framesSpeed))
+    if (actualState == Player::RUNNING)
     {
-        framesCounter = 0;
-
-        if (actualState == Player::RUNNING)
-        {
-            HandleAnimationByBounds(runningAnimationBounds, runningAnimationRegion.x, 7, currentFrame);
-        }
-        else
-        {
-            HandleAnimationByBounds(idleAnimationBounds, idleAnimationRegion.x, 3, currentFrame);
-        }
+        HandleAnimationByBounds(runningAnimationBounds, runningAnimationRegion.x, 8, currentFrame, framesCounter, 12);
+    }
+    else if (actualState == Player::JUMPING)
+    {
+        HandleAnimationByBounds(jumpingAnimationBounds, jumpingAnimationRegion.x, 15, currentFrame, framesCounter, framesSpeed);
+    }
+    else
+    {
+        HandleAnimationByBounds(idleAnimationBounds, idleAnimationRegion.x, 4, currentFrame, framesCounter, framesSpeed);
     }
 
     Rectangle currentAnimationBounds = GetCurrentAnimationBounds();
@@ -142,9 +158,13 @@ void Player::Dispose()
 
 Player::AnimationState Player::GetCurrentAnimationState()
 {
-    bool isPlayerMoving = IsKeyDown(KEY_A) || IsKeyDown(KEY_D);
+    if (velocity.y < 0 || (velocity.y > 0 && previousState == Player::JUMPING))
+        return Player::JUMPING;
 
-    if (isPlayerMoving)
+    else if (velocity.y > 0)
+        return Player::FALLING;
+
+    else if (IsKeyDown(KEY_A) || IsKeyDown(KEY_D))
         return Player::RUNNING;
 
     return Player::STANDING;
@@ -163,6 +183,12 @@ Rectangle Player::GetCurrentAnimationBounds()
         currentAnimationBounds = runningAnimationBounds;
         break;
 
+    case JUMPING:
+        currentAnimationBounds = jumpingAnimationBounds;
+        break;
+
+    case FALLING:
+    case STANDING:
     default:
         currentAnimationBounds = idleAnimationBounds;
     }

@@ -22,8 +22,9 @@ public:
     enum AnimationState
     {
         STANDING,
+        RUNNING,
         JUMPING,
-        RUNNING
+        FALLING,
     };
 
 private:
@@ -32,9 +33,11 @@ private:
     Rectangle idleAnimationBounds;
     Rectangle runningAnimationRegion;
     Rectangle runningAnimationBounds;
+    Rectangle jumpingAnimationRegion;
+    Rectangle jumpingAnimationBounds;
     AnimationState GetCurrentAnimationState();
     Rectangle GetCurrentAnimationBounds();
-    void HandleAnimationByBounds(Rectangle &animationBounds, float initialXposition, int totalFrames, int &currentFrame);
+    void HandleAnimationByBounds(Rectangle &animationBounds, float initialXposition, int totalFrames, int &currentFrame, int &frameCounter, int frameSpeed);
     AnimationState actualState;
     AnimationState previousState;
     int speed;
