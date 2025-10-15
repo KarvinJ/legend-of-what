@@ -153,29 +153,6 @@ void Player::Draw()
         DrawText("Standing", 400, 400, 32, WHITE);
     }
 
-    framesCounter++;
-
-    if (actualState == Player::RUNNING)
-    {
-        HandleAnimationByBounds(runningAnimationBounds, runningAnimationRegion.x, 8, currentFrame, framesCounter, 12);
-    }
-    else if (actualState == Player::JUMPING)
-    {
-        HandleAnimationByBounds(jumpingAnimationBounds, jumpingAnimationRegion.x, 15, currentFrame, framesCounter, framesSpeed);
-    }
-    else if (actualState == Player::DYING)
-    {
-        HandleAnimationByBounds(dyingAnimationBounds, dyingAnimationRegion.x, 8, currentFrame, framesCounter, framesSpeed);
-    }
-    else if (actualState == Player::ATTACKING)
-    {
-        HandleAnimationByBounds(attackingAnimationBounds, attackingAnimationRegion.x, 8, currentFrame, framesCounter, framesSpeed);
-    }
-    else
-    {
-        HandleAnimationByBounds(idleAnimationBounds, idleAnimationRegion.x, 4, currentFrame, framesCounter, framesSpeed);
-    }
-
     Rectangle currentAnimationBounds = GetCurrentAnimationBounds();
     Vector2 drawPosition = GetDrawPosition();
 
@@ -240,28 +217,35 @@ Rectangle Player::GetCurrentAnimationBounds()
 
     Rectangle currentAnimationBounds;
 
+    framesCounter++;
+
     switch (actualState)
     {
 
     case DYING:
+        HandleAnimationByBounds(dyingAnimationBounds, dyingAnimationRegion.x, 8, currentFrame, framesCounter, framesSpeed);
         currentAnimationBounds = dyingAnimationBounds;
         break;
 
     case ATTACKING:
+        HandleAnimationByBounds(attackingAnimationBounds, attackingAnimationRegion.x, 8, currentFrame, framesCounter, framesSpeed);
         currentAnimationBounds = attackingAnimationBounds;
         break;
 
     case RUNNING:
+        HandleAnimationByBounds(runningAnimationBounds, runningAnimationRegion.x, 8, currentFrame, framesCounter, 12);
         currentAnimationBounds = runningAnimationBounds;
         break;
 
     case JUMPING:
+        HandleAnimationByBounds(jumpingAnimationBounds, jumpingAnimationRegion.x, 15, currentFrame, framesCounter, framesSpeed);
         currentAnimationBounds = jumpingAnimationBounds;
         break;
 
     case FALLING:
     case STANDING:
     default:
+        HandleAnimationByBounds(idleAnimationBounds, idleAnimationRegion.x, 4, currentFrame, framesCounter, framesSpeed);
         currentAnimationBounds = idleAnimationBounds;
     }
 
