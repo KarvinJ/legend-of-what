@@ -7,7 +7,7 @@ Game::Game()
     screenHeight = 720;
 
     InitWindow(screenWidth, screenHeight, "Legend-of-what");
-    SetTargetFPS(GetMonitorRefreshRate(0));
+    SetTargetFPS(60);
     InitAudioDevice();
 
     actionSound = LoadSound("assets/sounds/okay.wav");
