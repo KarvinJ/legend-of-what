@@ -226,7 +226,7 @@ Rectangle Player::GetCurrentAnimationBounds()
         break;
 
     case ATTACKING:
-        HandleAnimationByBounds(attackingAnimationBounds, attackingAnimationRegion.x, 8, currentFrame, framesCounter, framesSpeed);
+        HandleAnimationByBounds(attackingAnimationBounds, attackingAnimationRegion.x, 4, currentFrame, framesCounter, 12);
         currentAnimationBounds = attackingAnimationBounds;
         break;
 
