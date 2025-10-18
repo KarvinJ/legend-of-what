@@ -3,6 +3,7 @@
 #include <vector>
 #include "SpriteSheetLoader.h"
 #include "Player.h"
+#include "Enemy.h"
 
 class Game
 {
@@ -24,6 +25,7 @@ private:
     Camera2D camera;
     std::vector<Rectangle> collisionBounds;
     Player player;
+    Enemy enemy;
     Sound actionSound;
     Music music;
 };

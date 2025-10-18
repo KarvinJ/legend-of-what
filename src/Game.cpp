@@ -12,10 +12,14 @@ Game::Game()
 
     actionSound = LoadSound("assets/sounds/okay.wav");
 
-    Texture2D spriteSheet = LoadTexture("assets/img/characters/character-spritesheet.png");
-    unordered_map<string, Rectangle> spriteSheetData = loadSpriteSheetData("assets/img/characters/character-spritesheet.txt");
+    Texture2D characterSpriteSheet = LoadTexture("assets/img/characters/character-spritesheet.png");
+    unordered_map<string, Rectangle> characterSpriteSheetData = loadSpriteSheetData("assets/img/characters/character-spritesheet.txt");
 
-    player = Player(screenWidth / 2, screenHeight / 2, spriteSheet, spriteSheetData);
+    player = Player(screenWidth / 2, screenHeight / 2, characterSpriteSheet, characterSpriteSheetData);
+
+    Texture2D enemiesSpriteSheet = LoadTexture("assets/img/enemies/enemies-spritesheet.png");
+    unordered_map<string, Rectangle> enemiesSpriteSheetData = loadSpriteSheetData("assets/img/enemies/enemies-spritesheet.txt");
+    enemy = Enemy(screenWidth / 2 + 150, 518, enemiesSpriteSheet, enemiesSpriteSheetData);
 
     collisionBounds = {
         {0, screenHeight - 64, screenWidth, 128},
@@ -48,6 +52,7 @@ void Game::Update(float deltaTime)
     if (!isGamePaused)
     {
         player.Update(deltaTime);
+        enemy.Update(deltaTime);
 
         ManageStructureCollision(deltaTime);
     }
@@ -71,6 +76,7 @@ void Game::Draw(float deltaTime)
     }
 
     player.Draw(deltaTime);
+    enemy.Draw(deltaTime);
 
     EndMode2D();
 
@@ -149,6 +155,7 @@ void Game::ManageStructureCollision(float deltaTime)
 Game::~Game()
 {
     player.Dispose();
+    enemy.Dispose();
     UnloadSound(actionSound);
     // UnloadMusicStream(music);
     CloseAudioDevice();

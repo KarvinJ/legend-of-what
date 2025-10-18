@@ -65,9 +65,9 @@ Player::Player(float positionX, float positionY, Texture2D &spriteSheet, unorder
     currentFrame = 0;
 }
 
-void Player::HandleAnimationByBounds(Rectangle &animationBounds, float initialXposition, int totalFrames, int &currentFrame, int &frameCounter, int actualFrameSpeed)
+void Player::HandleAnimationByBounds(Rectangle &animationBounds, float initialXposition, int totalFrames, int &currentFrame, int &frameCounter, int frameSpeed)
 {
-    if (framesCounter >= (60 / actualFrameSpeed))
+    if (framesCounter >= (60 / frameSpeed))
     {
         framesCounter = 0;
 
@@ -133,34 +133,11 @@ void Player::Update(float deltaTime)
 
 void Player::Draw(float deltaTime)
 {
-    if (actualState == Player::RUNNING)
-    {
-        DrawText("Running", 400, 400, 32, WHITE);
-    }
-    else if (actualState == Player::JUMPING)
-    {
-        DrawText("Jumping", 400, 400, 32, WHITE);
-    }
-    else if (actualState == Player::DYING)
-    {
-        DrawText("Dying", 400, 400, 32, WHITE);
-    }
-    else if (actualState == Player::ATTACKING)
-    {
-        DrawText("Attacking", 400, 400, 32, WHITE);
-    }
-    else
-    {
-        DrawText("Standing", 400, 400, 32, WHITE);
-    }
-
     Rectangle currentAnimationBounds = GetCurrentAnimationBounds(deltaTime);
-    Vector2 drawPosition = GetDrawPosition();
 
-    DrawTextureRec(spriteSheet, currentAnimationBounds, drawPosition, WHITE);
+    DrawTextureRec(spriteSheet, currentAnimationBounds, GetDrawPosition(), WHITE);
 
-    // Rectangle collisionBounds = GetCollisionBounds();
-    // DrawRectangleRec(collisionBounds, WHITE);
+    // DrawRectangleRec(GetCollisionBounds(), WHITE);
 }
 
 Vector2 Player::GetDrawPosition()
