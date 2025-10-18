@@ -18,6 +18,7 @@ public:
 
 public:
     Rectangle bounds;
+    Rectangle attackBounds;
     Vector2 velocity;
     enum AnimationState
     {

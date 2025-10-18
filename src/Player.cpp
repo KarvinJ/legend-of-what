@@ -13,6 +13,7 @@ Player::Player(float positionX, float positionY, Texture2D &spriteSheet, unorder
 
     idleAnimationRegion = spriteSheetData["idle"];
     bounds = {positionX, positionY, (float)idleAnimationRegion.width / 4, (float)idleAnimationRegion.height};
+    attackBounds = {positionX + 10, positionY, 16, 32};
 
     idleAnimationBounds = {
         idleAnimationRegion.x,
@@ -137,7 +138,13 @@ void Player::Draw(float deltaTime)
 
     DrawTextureRec(spriteSheet, currentAnimationBounds, GetDrawPosition(), WHITE);
 
-    // DrawRectangleRec(GetCollisionBounds(), WHITE);
+    Rectangle collisionBounds = GetCollisionBounds();
+
+    attackBounds.x = collisionBounds.x + collisionBounds.width;
+    attackBounds.y = collisionBounds.y;
+    DrawRectangleRec(attackBounds, GREEN);
+
+    // DrawRectangleRec(collisionBounds, WHITE);
 }
 
 Vector2 Player::GetDrawPosition()

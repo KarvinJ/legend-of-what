@@ -55,7 +55,7 @@ void Enemy::Draw(float deltaTime)
 
     DrawTextureRec(spriteSheet, idleAnimationBounds, GetDrawPosition(), WHITE);
 
-    // DrawRectangleRec(GetCollisionBounds(), WHITE);
+    // DrawRectangleRec(GetCollisionBounds(), RED);
 }
 
 Vector2 Enemy::GetDrawPosition()
