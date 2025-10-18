@@ -43,6 +43,8 @@ private:
     Rectangle dyingAnimationBounds;
     Rectangle attackingAnimationRegion;
     Rectangle attackingAnimationBounds;
+    float attackAnimationTimer;
+    int attackAnimationFrame;
     AnimationState GetCurrentAnimationState();
     Rectangle GetCurrentAnimationBounds();
     void HandleAnimationByBounds(Rectangle &animationBounds, float initialXposition, int totalFrames, int &currentFrame, int &frameCounter, int frameSpeed);

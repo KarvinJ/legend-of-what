@@ -52,6 +52,9 @@ Player::Player(float positionX, float positionY, Texture2D &spriteSheet, unorder
         (float)attackingAnimationRegion.width / 8,
         (float)attackingAnimationRegion.height};
 
+    attackAnimationTimer = 0;
+    attackAnimationFrame = 0;
+
     previousState = Player::STANDING;
     actualState = Player::STANDING;
 
@@ -197,7 +200,7 @@ Player::AnimationState Player::GetCurrentAnimationState()
     else if (velocity.y < 0 || (velocity.y > 0 && previousState == Player::JUMPING))
         return Player::JUMPING;
 
-    else if (IsKeyDown(KEY_E))
+    else if (IsKeyDown(KEY_E) && attackAnimationTimer < 0.3)
         return Player::ATTACKING;
 
     else if (velocity.y > 0)
@@ -215,7 +218,19 @@ Rectangle Player::GetCurrentAnimationBounds()
 
     Rectangle currentAnimationBounds;
 
+    float deltaTime = GetFrameTime();
+
     framesCounter++;
+
+    if (IsKeyDown(KEY_E))
+    {
+        attackAnimationTimer += deltaTime;
+    }
+    else
+    {
+        attackAnimationTimer = 0;
+        attackAnimationFrame = 0;
+    }
 
     switch (actualState)
     {
@@ -226,8 +241,18 @@ Rectangle Player::GetCurrentAnimationBounds()
         break;
 
     case ATTACKING:
-        HandleAnimationByBounds(attackingAnimationBounds, attackingAnimationRegion.x, 4, currentFrame, framesCounter, 12);
-        currentAnimationBounds = attackingAnimationBounds;
+
+        if (attackAnimationTimer < 0.3)
+        {
+            HandleAnimationByBounds(attackingAnimationBounds, attackingAnimationRegion.x, 4, attackAnimationFrame, framesCounter, 12);
+            currentAnimationBounds = attackingAnimationBounds;
+        }
+        else
+        {
+            HandleAnimationByBounds(idleAnimationBounds, idleAnimationRegion.x, 4, currentFrame, framesCounter, framesSpeed);
+            currentAnimationBounds = idleAnimationBounds;
+        }
+
         break;
 
     case RUNNING:
