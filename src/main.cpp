@@ -6,7 +6,6 @@ int main()
 
     while (!WindowShouldClose())
     {
-        game.Update();
-        game.Draw();
+        game.Run();
     }
 }

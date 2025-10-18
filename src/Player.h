@@ -10,7 +10,7 @@ public:
     Player();
     Player(float positionX, float positionY, Texture2D &spriteSheet, unordered_map<string, Rectangle> &spriteSheetData);
     void Update(float deltaTime);
-    void Draw();
+    void Draw(float deltaTime);
     Vector2 GetDrawPosition();
     Rectangle GetCollisionBounds();
     Rectangle GetPreviousPosition();
@@ -46,7 +46,7 @@ private:
     float attackAnimationTimer;
     int attackAnimationFrame;
     AnimationState GetCurrentAnimationState();
-    Rectangle GetCurrentAnimationBounds();
+    Rectangle GetCurrentAnimationBounds(float deltaTime);
     void HandleAnimationByBounds(Rectangle &animationBounds, float initialXposition, int totalFrames, int &currentFrame, int &frameCounter, int frameSpeed);
     AnimationState actualState;
     AnimationState previousState;

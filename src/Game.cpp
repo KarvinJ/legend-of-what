@@ -35,11 +35,9 @@ Game::Game()
     // PlayMusicStream(music);
 }
 
-void Game::Update()
+void Game::Update(float deltaTime)
 {
     // UpdateMusicStream(music);
-
-    float deltaTime = GetFrameTime();
 
     if (IsKeyPressed(KEY_F))
     {
@@ -55,7 +53,7 @@ void Game::Update()
     }
 }
 
-void Game::Draw()
+void Game::Draw(float deltaTime)
 {
     BeginDrawing();
 
@@ -72,7 +70,7 @@ void Game::Draw()
         DrawRectangleRec(collisionBound, BLUE);
     }
 
-    player.Draw();
+    player.Draw(deltaTime);
 
     EndMode2D();
 
@@ -82,6 +80,14 @@ void Game::Draw()
     }
 
     EndDrawing();
+}
+
+void Game::Run()
+{
+    float deltaTime = GetFrameTime();
+
+    Update(deltaTime);
+    Draw(deltaTime);
 }
 
 bool Game::CheckCollisionInX(Rectangle bounds, Rectangle platform)

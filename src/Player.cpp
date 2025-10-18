@@ -131,7 +131,7 @@ void Player::Update(float deltaTime)
     }
 }
 
-void Player::Draw()
+void Player::Draw(float deltaTime)
 {
     if (actualState == Player::RUNNING)
     {
@@ -154,7 +154,7 @@ void Player::Draw()
         DrawText("Standing", 400, 400, 32, WHITE);
     }
 
-    Rectangle currentAnimationBounds = GetCurrentAnimationBounds();
+    Rectangle currentAnimationBounds = GetCurrentAnimationBounds(deltaTime);
     Vector2 drawPosition = GetDrawPosition();
 
     DrawTextureRec(spriteSheet, currentAnimationBounds, drawPosition, WHITE);
@@ -212,13 +212,11 @@ Player::AnimationState Player::GetCurrentAnimationState()
     return Player::STANDING;
 }
 
-Rectangle Player::GetCurrentAnimationBounds()
+Rectangle Player::GetCurrentAnimationBounds(float deltaTime)
 {
     actualState = GetCurrentAnimationState();
 
     Rectangle currentAnimationBounds;
-
-    float deltaTime = GetFrameTime();
 
     framesCounter++;
 

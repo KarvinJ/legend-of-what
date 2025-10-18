@@ -10,8 +10,9 @@ class Game
 public:
     Game();
     ~Game();
-    void Update();
-    void Draw();
+    void Update(float deltaTime);
+    void Draw(float deltaTime);
+    void Run();
     bool CheckCollisionInX(Rectangle bounds, Rectangle platform);
     bool CheckCollisionInY(Rectangle bounds, Rectangle platform);
     void ManageStructureCollision(float deltaTime);
