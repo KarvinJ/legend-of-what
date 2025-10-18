@@ -29,6 +29,7 @@ public:
         ATTACKING,
         DYING,
     };
+    AnimationState actualState;
 
 private:
     bool isDead;
@@ -49,7 +50,6 @@ private:
     AnimationState GetCurrentAnimationState();
     Rectangle GetCurrentAnimationBounds(float deltaTime);
     void HandleAnimationByBounds(Rectangle &animationBounds, float initialXposition, int totalFrames, int &currentFrame, int &frameCounter, int frameSpeed);
-    AnimationState actualState;
     AnimationState previousState;
     int speed;
     int framesCounter;

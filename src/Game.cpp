@@ -52,7 +52,13 @@ void Game::Update(float deltaTime)
     if (!isGamePaused)
     {
         player.Update(deltaTime);
+
         enemy.Update(deltaTime);
+
+        if (player.actualState == Player::AnimationState::ATTACKING)
+        {
+            enemy.HasBeenHit(player.attackBounds);
+        }
 
         ManageStructureCollision(deltaTime);
     }
@@ -76,7 +82,11 @@ void Game::Draw(float deltaTime)
     }
 
     player.Draw(deltaTime);
-    enemy.Draw(deltaTime);
+
+    if (!enemy.isDestroyed)
+    {
+        enemy.Draw(deltaTime);
+    }
 
     EndMode2D();
 

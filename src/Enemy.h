@@ -14,14 +14,17 @@ public:
     Vector2 GetDrawPosition();
     Rectangle GetCollisionBounds();
     Rectangle GetPreviousPosition();
+    bool HasBeenHit(Rectangle hitBounds);
     void Dispose();
 
 public:
     Rectangle bounds;
     Vector2 velocity;
+    bool isDestroyed;
 
 private:
     bool isDead;
+    float deadTimer;
     Texture2D spriteSheet;
     Rectangle idleAnimationRegion;
     Rectangle idleAnimationBounds;

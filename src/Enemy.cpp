@@ -8,6 +8,8 @@ Enemy::Enemy(float positionX, float positionY, Texture2D &spriteSheet, unordered
 {
     this->spriteSheet = spriteSheet;
     isDead = false;
+    isDestroyed = false;
+    deadTimer = 0;
 
     idleAnimationRegion = spriteSheetData["idle"];
     bounds = {positionX, positionY, (float)idleAnimationRegion.width / 4, (float)idleAnimationRegion.height};
@@ -51,9 +53,24 @@ void Enemy::Draw(float deltaTime)
 
     // HandleAnimationByBounds(hitAnimationBounds, 0, 4, currentFrame, framesCounter, framesSpeed);
     // HandleAnimationByBounds(runningAnimationBounds, 0, 4, currentFrame, framesCounter, 12);
-    HandleAnimationByBounds(idleAnimationBounds, 0, 4, currentFrame, framesCounter, framesSpeed);
 
-    DrawTextureRec(spriteSheet, idleAnimationBounds, GetDrawPosition(), WHITE);
+    if (isDead)
+    {
+        deadTimer += deltaTime;
+
+        HandleAnimationByBounds(hitAnimationBounds, 0, 4, currentFrame, framesCounter, 8);
+        DrawTextureRec(spriteSheet, hitAnimationBounds, GetDrawPosition(), WHITE);
+
+        if (deadTimer >= 1)
+        {
+            isDestroyed = true;
+        }
+    }
+    else
+    {
+        HandleAnimationByBounds(idleAnimationBounds, 0, 4, currentFrame, framesCounter, framesSpeed);
+        DrawTextureRec(spriteSheet, idleAnimationBounds, GetDrawPosition(), WHITE);
+    }
 
     // DrawRectangleRec(GetCollisionBounds(), RED);
 }
@@ -80,6 +97,17 @@ Rectangle Enemy::GetPreviousPosition()
     float positionY = collisionBounds.y - velocity.y;
 
     return {positionX, positionY, collisionBounds.width, collisionBounds.height};
+}
+
+bool Enemy::HasBeenHit(Rectangle hitBounds)
+{
+    if (CheckCollisionRecs(GetCollisionBounds(), hitBounds))
+    {
+        isDead = true;
+        return true;
+    }
+
+    return false;
 }
 
 void Enemy::HandleAnimationByBounds(Rectangle &animationBounds, float initialXposition, int totalFrames, int &currentFrame, int &frameCounter, int frameSpeed)
