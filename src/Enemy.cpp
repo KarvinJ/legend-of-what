@@ -69,7 +69,7 @@ void Enemy::Draw(float deltaTime)
 
     DrawTextureRec(spriteSheet, currentAnimationBounds, GetDrawPosition(), WHITE);
 
-    // DrawRectangleRec(GetCollisionBounds(), RED);
+    DrawRectangleRec(GetCollisionBounds(), RED);
 }
 
 Vector2 Enemy::GetDrawPosition()
@@ -98,7 +98,7 @@ Rectangle Enemy::GetPreviousPosition()
 
 void Enemy::HasCollideWithObstacle(Rectangle obstacleBounds)
 {
-    if (CheckCollisionRecs(GetCollisionBounds(), obstacleBounds))
+    if (bounds.x + bounds.width > obstacleBounds.x && bounds.x < obstacleBounds.x + obstacleBounds.width)
     {
         isMovingRight = !isMovingRight;
     }

@@ -26,7 +26,7 @@ Game::Game()
         {screenWidth / 2, screenHeight - 180, 64, 128},
         {screenWidth / 2 + 140, screenHeight - 180, 128, 64},
         {screenWidth / 2 - 200, screenHeight - 180, 128, 64},
-        {screenWidth / 2 +160, screenHeight - 200, 64, 64},
+        {screenWidth / 2 - 100, screenHeight - 200, 32, 64},
     };
 
     camera = {0};
@@ -126,7 +126,6 @@ void Game::ManageStructureCollision(float deltaTime)
 {
     for (auto &platform : platformBounds)
     {
-
         enemy.HasCollideWithObstacle(platform);
 
         Rectangle playerBounds = player.GetCollisionBounds();
