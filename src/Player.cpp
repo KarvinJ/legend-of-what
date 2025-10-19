@@ -171,6 +171,17 @@ Rectangle Player::GetPreviousPosition()
     return {positionX, positionY, collisionBounds.width, collisionBounds.height};
 }
 
+bool Player::HasBeenHit(Rectangle enemyBounds)
+{
+    if (CheckCollisionRecs(GetCollisionBounds(), enemyBounds))
+    {
+        isDead = true;
+        return true;
+    }
+   
+    return false;
+}
+
 void Player::Dispose()
 {
     UnloadTexture(spriteSheet);

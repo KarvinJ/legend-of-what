@@ -60,6 +60,8 @@ void Game::Update(float deltaTime)
             enemy.HasBeenHit(player.attackBounds);
         }
 
+        player.HasBeenHit(enemy.GetCollisionBounds());
+
         ManageStructureCollision(deltaTime);
     }
 }

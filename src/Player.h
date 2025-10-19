@@ -14,6 +14,7 @@ public:
     Vector2 GetDrawPosition();
     Rectangle GetCollisionBounds();
     Rectangle GetPreviousPosition();
+    bool HasBeenHit(Rectangle enemyBounds);
     void Dispose();
 
 public:
