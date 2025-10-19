@@ -151,8 +151,7 @@ void Player::Draw(float deltaTime)
 
     attackBounds.y = collisionBounds.y;
 
-    DrawRectangleRec(attackBounds, GREEN);
-
+    // DrawRectangleRec(attackBounds, GREEN);
     // DrawRectangleRec(collisionBounds, WHITE);
 }
 
