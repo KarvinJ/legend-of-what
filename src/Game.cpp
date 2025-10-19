@@ -19,14 +19,24 @@ Game::Game()
 
     Texture2D enemiesSpriteSheet = LoadTexture("assets/img/enemies/enemies-spritesheet.png");
     unordered_map<string, Rectangle> enemiesSpriteSheetData = loadSpriteSheetData("assets/img/enemies/enemies-spritesheet.txt");
-    enemy = Enemy(screenWidth / 2 - 150, 518, enemiesSpriteSheet, enemiesSpriteSheetData);
+
+    enemies = {
+        Enemy(screenWidth / 2 - 200, 518, enemiesSpriteSheet, enemiesSpriteSheetData),
+        Enemy(screenWidth / 2 + 150, 518, enemiesSpriteSheet, enemiesSpriteSheetData),
+    };
+
+    enemyObstacleBounds = {
+        {screenWidth / 2 - 50, screenHeight - 200, 8, 16},
+        {screenWidth / 2 - 300, screenHeight - 200, 8, 16},
+        {screenWidth / 2 + 100, screenHeight - 200, 8, 16},
+        {screenWidth / 2 + 350, screenHeight - 200, 8, 16},
+    };
 
     platformBounds = {
         {0, screenHeight - 64, screenWidth, 128},
         {screenWidth / 2, screenHeight - 180, 64, 128},
-        {screenWidth / 2 + 140, screenHeight - 180, 128, 64},
-        {screenWidth / 2 - 200, screenHeight - 180, 128, 64},
-        {screenWidth / 2 - 100, screenHeight - 200, 32, 64},
+        {screenWidth / 2 + 100, screenHeight - 180, 256, 64},
+        {screenWidth / 2 - 300, screenHeight - 180, 256, 64},
     };
 
     camera = {0};
@@ -54,15 +64,23 @@ void Game::Update(float deltaTime)
     {
         player.Update(deltaTime);
 
-        enemy.Update(deltaTime);
-
-        if (!enemy.isDead)
+        for (auto &enemy : enemies)
         {
-            player.HasBeenHit(enemy.GetCollisionBounds());
+            enemy.Update(deltaTime);
 
-            if (player.actualState == Player::AnimationState::ATTACKING)
+            for (auto &enemyObstacleBound : enemyObstacleBounds)
             {
-                enemy.HasBeenHit(player.attackBounds);
+                enemy.HasCollideWithObstacle(enemyObstacleBound);
+            }
+
+            if (!enemy.isDead)
+            {
+                player.HasBeenHit(enemy.GetCollisionBounds());
+
+                if (player.actualState == Player::AnimationState::ATTACKING)
+                {
+                    enemy.HasBeenHit(player.attackBounds);
+                }
             }
         }
 
@@ -87,11 +105,19 @@ void Game::Draw(float deltaTime)
         DrawRectangleRec(collisionBound, BLUE);
     }
 
+    for (auto &enemyObstacleBound : enemyObstacleBounds)
+    {
+        DrawRectangleRec(enemyObstacleBound, YELLOW);
+    }
+
     player.Draw(deltaTime);
 
-    if (!enemy.isDestroyed)
+    for (auto &enemy : enemies)
     {
-        enemy.Draw(deltaTime);
+        if (!enemy.isDestroyed)
+        {
+            enemy.Draw(deltaTime);
+        }
     }
 
     EndMode2D();
@@ -126,8 +152,6 @@ void Game::ManageStructureCollision(float deltaTime)
 {
     for (auto &platform : platformBounds)
     {
-        enemy.HasCollideWithObstacle(platform);
-
         Rectangle playerBounds = player.GetCollisionBounds();
 
         if (CheckCollisionRecs(playerBounds, platform))
@@ -173,7 +197,7 @@ void Game::ManageStructureCollision(float deltaTime)
 Game::~Game()
 {
     player.Dispose();
-    enemy.Dispose();
+    // enemies.Dispose();
     UnloadSound(actionSound);
     // UnloadMusicStream(music);
     CloseAudioDevice();

@@ -26,6 +26,8 @@ public:
 
 private:
     bool isMovingRight;
+    bool hasCollideRecently;
+    float collisionTimer;
     float deadTimer;
     Texture2D spriteSheet;
     Rectangle idleAnimationRegion;

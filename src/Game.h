@@ -24,8 +24,9 @@ private:
     float screenHeight;
     Camera2D camera;
     std::vector<Rectangle> platformBounds;
+    std::vector<Rectangle> enemyObstacleBounds;
     Player player;
-    Enemy enemy;
+    std::vector<Enemy> enemies;
     Sound actionSound;
     Music music;
 };

@@ -41,6 +41,8 @@ Enemy::Enemy(float positionX, float positionY, Texture2D &spriteSheet, unordered
     velocity = {0, 0};
     framesCounter = 0;
     currentFrame = 0;
+    hasCollideRecently = false;
+    collisionTimer = 0;
 }
 
 void Enemy::Update(float deltaTime)
@@ -57,6 +59,17 @@ void Enemy::Update(float deltaTime)
     else
     {
         velocity.x -= speed * deltaTime;
+    }
+
+    if (hasCollideRecently)
+    {
+        collisionTimer += deltaTime;
+
+        if (collisionTimer > 0.5)
+        {
+            collisionTimer = 0;
+            hasCollideRecently = false;
+        }
     }
 
     velocity.x *= 0.9f;
@@ -98,8 +111,11 @@ Rectangle Enemy::GetPreviousPosition()
 
 void Enemy::HasCollideWithObstacle(Rectangle obstacleBounds)
 {
-    if (bounds.x + bounds.width > obstacleBounds.x && bounds.x < obstacleBounds.x + obstacleBounds.width)
+    Rectangle collisionBounds = GetCollisionBounds();
+
+    if (!hasCollideRecently && (collisionBounds.x + collisionBounds.width > obstacleBounds.x && collisionBounds.x < obstacleBounds.x + obstacleBounds.width))
     {
+        hasCollideRecently = true;
         isMovingRight = !isMovingRight;
     }
 }
