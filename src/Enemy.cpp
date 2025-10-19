@@ -10,6 +10,7 @@ Enemy::Enemy(float positionX, float positionY, Texture2D &spriteSheet, unordered
     isDead = false;
     isDestroyed = false;
     deadTimer = 0;
+    isMovingRight = true;
 
     idleAnimationRegion = spriteSheetData["idle"];
     bounds = {positionX, positionY, (float)idleAnimationRegion.width / 4, (float)idleAnimationRegion.height};
@@ -36,41 +37,37 @@ Enemy::Enemy(float positionX, float positionY, Texture2D &spriteSheet, unordered
         (float)hitAnimationRegion.width / 4,
         (float)hitAnimationRegion.height};
 
-    speed = 50;
+    speed = 10;
     velocity = {0, 0};
     framesCounter = 0;
-    framesSpeed = 6;
     currentFrame = 0;
 }
 
 void Enemy::Update(float deltaTime)
 {
+    if (isDead)
+    {
+        return;
+    }
+
+    if (isMovingRight)
+    {
+        velocity.x += speed * deltaTime;
+    }
+    else
+    {
+        velocity.x -= speed * deltaTime;
+    }
+
+    velocity.x *= 0.9f;
+    bounds.x += velocity.x;
 }
 
 void Enemy::Draw(float deltaTime)
 {
-    framesCounter++;
+    Rectangle currentAnimationBounds = GetCurrentAnimationBounds(deltaTime);
 
-    // HandleAnimationByBounds(hitAnimationBounds, 0, 4, currentFrame, framesCounter, framesSpeed);
-    // HandleAnimationByBounds(runningAnimationBounds, 0, 4, currentFrame, framesCounter, 12);
-
-    if (isDead)
-    {
-        deadTimer += deltaTime;
-
-        HandleAnimationByBounds(hitAnimationBounds, 0, 4, currentFrame, framesCounter, 8);
-        DrawTextureRec(spriteSheet, hitAnimationBounds, GetDrawPosition(), WHITE);
-
-        if (deadTimer >= 1)
-        {
-            isDestroyed = true;
-        }
-    }
-    else
-    {
-        HandleAnimationByBounds(idleAnimationBounds, 0, 4, currentFrame, framesCounter, framesSpeed);
-        DrawTextureRec(spriteSheet, idleAnimationBounds, GetDrawPosition(), WHITE);
-    }
+    DrawTextureRec(spriteSheet, currentAnimationBounds, GetDrawPosition(), WHITE);
 
     // DrawRectangleRec(GetCollisionBounds(), RED);
 }
@@ -108,6 +105,43 @@ bool Enemy::HasBeenHit(Rectangle hitBounds)
     }
 
     return false;
+}
+
+Rectangle Enemy::GetCurrentAnimationBounds(float deltaTime)
+{
+    Rectangle currentAnimationBounds;
+
+    framesCounter++;
+
+    if (isDead)
+    {
+        deadTimer += deltaTime;
+
+        HandleAnimationByBounds(hitAnimationBounds, 0, 4, currentFrame, framesCounter, 8);
+        currentAnimationBounds = hitAnimationBounds;
+
+        if (deadTimer >= 1)
+        {
+            isDestroyed = true;
+        }
+    }
+    else
+    {
+        HandleAnimationByBounds(runningAnimationBounds, 0, 4, currentFrame, framesCounter, 12);
+        currentAnimationBounds = runningAnimationBounds;
+    }
+
+    if (!isMovingRight)
+    {
+        currentAnimationBounds.width = currentAnimationBounds.width;
+    }
+
+    else
+    {
+        currentAnimationBounds.width = -currentAnimationBounds.width;
+    }
+
+    return currentAnimationBounds;
 }
 
 void Enemy::HandleAnimationByBounds(Rectangle &animationBounds, float initialXposition, int totalFrames, int &currentFrame, int &frameCounter, int frameSpeed)

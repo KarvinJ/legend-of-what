@@ -24,6 +24,7 @@ public:
 
 private:
     bool isDead;
+    bool isMovingRight;
     float deadTimer;
     Texture2D spriteSheet;
     Rectangle idleAnimationRegion;
@@ -32,9 +33,9 @@ private:
     Rectangle runningAnimationBounds;
     Rectangle hitAnimationRegion;
     Rectangle hitAnimationBounds;
+    Rectangle GetCurrentAnimationBounds(float deltaTime);
     void HandleAnimationByBounds(Rectangle &animationBounds, float initialXposition, int totalFrames, int &currentFrame, int &frameCounter, int frameSpeed);
     int speed;
     int framesCounter;
-    int framesSpeed;
     int currentFrame;
 };
