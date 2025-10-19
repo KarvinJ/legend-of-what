@@ -20,10 +20,10 @@ public:
 public:
     Rectangle bounds;
     Vector2 velocity;
+    bool isDead;
     bool isDestroyed;
 
 private:
-    bool isDead;
     bool isMovingRight;
     float deadTimer;
     Texture2D spriteSheet;

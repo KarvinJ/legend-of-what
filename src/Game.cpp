@@ -19,7 +19,7 @@ Game::Game()
 
     Texture2D enemiesSpriteSheet = LoadTexture("assets/img/enemies/enemies-spritesheet.png");
     unordered_map<string, Rectangle> enemiesSpriteSheetData = loadSpriteSheetData("assets/img/enemies/enemies-spritesheet.txt");
-    enemy = Enemy(screenWidth / 2 + 150, 518, enemiesSpriteSheet, enemiesSpriteSheetData);
+    enemy = Enemy(screenWidth / 2 - 150, 518, enemiesSpriteSheet, enemiesSpriteSheetData);
 
     collisionBounds = {
         {0, screenHeight - 64, screenWidth, 128},
@@ -55,12 +55,15 @@ void Game::Update(float deltaTime)
 
         enemy.Update(deltaTime);
 
-        if (player.actualState == Player::AnimationState::ATTACKING)
+        if (!enemy.isDead)
         {
-            enemy.HasBeenHit(player.attackBounds);
-        }
+            player.HasBeenHit(enemy.GetCollisionBounds());
 
-        player.HasBeenHit(enemy.GetCollisionBounds());
+            if (player.actualState == Player::AnimationState::ATTACKING)
+            {
+                enemy.HasBeenHit(player.attackBounds);
+            }
+        }
 
         ManageStructureCollision(deltaTime);
     }

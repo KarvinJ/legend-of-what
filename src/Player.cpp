@@ -13,7 +13,7 @@ Player::Player(float positionX, float positionY, Texture2D &spriteSheet, unorder
 
     idleAnimationRegion = spriteSheetData["idle"];
     bounds = {positionX, positionY, (float)idleAnimationRegion.width / 4, (float)idleAnimationRegion.height};
-    attackBounds = {positionX + 10, positionY, 16, 32};
+    attackBounds = {positionX, positionY, 32, 32};
 
     idleAnimationBounds = {
         idleAnimationRegion.x,
@@ -124,7 +124,6 @@ void Player::Update(float deltaTime)
 
         if (deadTimer >= 2)
         {
-
             isDead = false;
             deadTimer = 0;
             actualState = Player::STANDING;
@@ -140,8 +139,17 @@ void Player::Draw(float deltaTime)
 
     Rectangle collisionBounds = GetCollisionBounds();
 
-    attackBounds.x = collisionBounds.x + collisionBounds.width;
+    if (!isDead && IsKeyDown(KEY_A))
+    {
+        attackBounds.x = collisionBounds.x - collisionBounds.width / 4;
+    }
+    else
+    {
+        attackBounds.x = collisionBounds.x + collisionBounds.width;
+    }
+
     attackBounds.y = collisionBounds.y;
+
     DrawRectangleRec(attackBounds, GREEN);
 
     // DrawRectangleRec(collisionBounds, WHITE);
@@ -178,7 +186,7 @@ bool Player::HasBeenHit(Rectangle enemyBounds)
         isDead = true;
         return true;
     }
-   
+
     return false;
 }
 
