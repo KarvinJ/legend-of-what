@@ -23,7 +23,7 @@ private:
     float screenWidth;
     float screenHeight;
     Camera2D camera;
-    std::vector<Rectangle> collisionBounds;
+    std::vector<Rectangle> platformBounds;
     Player player;
     Enemy enemy;
     Sound actionSound;

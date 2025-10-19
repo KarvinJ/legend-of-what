@@ -21,11 +21,12 @@ Game::Game()
     unordered_map<string, Rectangle> enemiesSpriteSheetData = loadSpriteSheetData("assets/img/enemies/enemies-spritesheet.txt");
     enemy = Enemy(screenWidth / 2 - 150, 518, enemiesSpriteSheet, enemiesSpriteSheetData);
 
-    collisionBounds = {
+    platformBounds = {
         {0, screenHeight - 64, screenWidth, 128},
         {screenWidth / 2, screenHeight - 180, 64, 128},
         {screenWidth / 2 + 140, screenHeight - 180, 128, 64},
         {screenWidth / 2 - 200, screenHeight - 180, 128, 64},
+        {screenWidth / 2 +160, screenHeight - 200, 64, 64},
     };
 
     camera = {0};
@@ -81,7 +82,7 @@ void Game::Draw(float deltaTime)
     // And here I give the camera the player position for the camera to follow.
     camera.target = {player.bounds.x, 600};
 
-    for (auto &collisionBound : collisionBounds)
+    for (auto &collisionBound : platformBounds)
     {
         DrawRectangleRec(collisionBound, BLUE);
     }
@@ -123,8 +124,11 @@ bool Game::CheckCollisionInY(Rectangle bounds, Rectangle platform)
 
 void Game::ManageStructureCollision(float deltaTime)
 {
-    for (auto &platform : collisionBounds)
+    for (auto &platform : platformBounds)
     {
+
+        enemy.HasCollideWithObstacle(platform);
+
         Rectangle playerBounds = player.GetCollisionBounds();
 
         if (CheckCollisionRecs(playerBounds, platform))

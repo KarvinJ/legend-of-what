@@ -96,6 +96,14 @@ Rectangle Enemy::GetPreviousPosition()
     return {positionX, positionY, collisionBounds.width, collisionBounds.height};
 }
 
+void Enemy::HasCollideWithObstacle(Rectangle obstacleBounds)
+{
+    if (CheckCollisionRecs(GetCollisionBounds(), obstacleBounds))
+    {
+        isMovingRight = !isMovingRight;
+    }
+}
+
 bool Enemy::HasBeenHit(Rectangle hitBounds)
 {
     if (CheckCollisionRecs(GetCollisionBounds(), hitBounds))
