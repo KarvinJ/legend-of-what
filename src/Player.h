@@ -34,6 +34,7 @@ public:
 
 private:
     bool isDead;
+    bool isMovingRight;
     float deadTimer;
     Texture2D spriteSheet;
     Rectangle idleAnimationRegion;

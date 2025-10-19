@@ -9,6 +9,7 @@ Player::Player(float positionX, float positionY, Texture2D &spriteSheet, unorder
 {
     this->spriteSheet = spriteSheet;
     isDead = false;
+    isMovingRight = true;
     deadTimer = 0;
 
     idleAnimationRegion = spriteSheetData["idle"];
@@ -139,13 +140,13 @@ void Player::Draw(float deltaTime)
 
     Rectangle collisionBounds = GetCollisionBounds();
 
-    if (!isDead && IsKeyDown(KEY_A))
+    if (isMovingRight)
     {
-        attackBounds.x = collisionBounds.x - collisionBounds.width / 4;
+        attackBounds.x = collisionBounds.x + collisionBounds.width;
     }
     else
     {
-        attackBounds.x = collisionBounds.x + collisionBounds.width;
+        attackBounds.x = collisionBounds.x - collisionBounds.width / 4;
     }
 
     attackBounds.y = collisionBounds.y;
@@ -273,12 +274,21 @@ Rectangle Player::GetCurrentAnimationBounds(float deltaTime)
         currentAnimationBounds = idleAnimationBounds;
     }
 
-    if (!isDead && IsKeyDown(KEY_D))
+    if (velocity.x < 0)
+    {
+        isMovingRight = false;
+    }
+    else if (velocity.x > 0)
+    {
+        isMovingRight = true;
+    }
+
+    if (isMovingRight)
     {
         currentAnimationBounds.width = currentAnimationBounds.width;
     }
 
-    else if (!isDead && IsKeyDown(KEY_A))
+    else
     {
         currentAnimationBounds.width = -currentAnimationBounds.width;
     }
