@@ -33,18 +33,29 @@ Game::Game()
         {screenWidth / 2 + 350, screenHeight - 150, 8, 16},
     };
 
+    float standardPlatformWidth = 256;
+
+    float gapSize = 150;
+    // float littlePlatformWidth = 128;
     platformBounds = {
         {0, screenHeight - 64, screenWidth, 128},
-        {screenWidth + 100, screenHeight - 64, 256, 128},
         {screenWidth / 2, screenHeight - 130, 64, 128},
-        {screenWidth / 2 + 100, screenHeight - 130, 256, 64},
-        {screenWidth / 2 - 300, screenHeight - 130, 256, 64},
+        {screenWidth / 2 + 100, screenHeight - 130, standardPlatformWidth, 64},
+        {screenWidth / 2 - 300, screenHeight - 130, standardPlatformWidth, 64},
     };
+
+    for (size_t i = 1; i < 10; i++)
+    {
+        float xValue = gapSize * i + standardPlatformWidth * i-1;
+
+        Rectangle platformBound = {xValue, screenHeight - 64, standardPlatformWidth, 128};
+        platformBounds.push_back(platformBound);
+    }
 
     cameraBounds = {screenWidth / 2.0f, screenHeight / 2.0f + 100, screenWidth, screenHeight};
     camera = {0};
     camera.offset = (Vector2){cameraBounds.x, cameraBounds.y}; // this is for control the camera default position
-    camera.target = {player.bounds.x, 600};                                   // the object that the camera will be following
+    camera.target = {player.bounds.x, 600};                    // the object that the camera will be following
     camera.rotation = 0.0f;
     camera.zoom = 2.0f;
 
@@ -99,12 +110,11 @@ void Game::Draw(float deltaTime)
 
     // all the code that should be affected by the camerea, should be put inside BeginMode2D
 
-
     if (IsKeyPressed(KEY_F1))
     {
         isDebugCamera = !isDebugCamera;
     }
-    
+
     if (isDebugCamera)
     {
         CameraController(camera);
@@ -211,11 +221,13 @@ void Game::ManageStructureCollision(float deltaTime)
 
 void Game::CameraController(Camera2D &camera)
 {
-    if (IsKeyDown(KEY_RIGHT)) {
+    if (IsKeyDown(KEY_RIGHT))
+    {
 
         cameraBounds.x += 6;
     }
-    else if (IsKeyDown(KEY_LEFT)) {
+    else if (IsKeyDown(KEY_LEFT))
+    {
 
         cameraBounds.x -= 6;
     }
