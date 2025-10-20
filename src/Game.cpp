@@ -21,22 +21,22 @@ Game::Game()
     unordered_map<string, Rectangle> enemiesSpriteSheetData = loadSpriteSheetData("assets/img/enemies/enemies-spritesheet.txt");
 
     enemies = {
-        Enemy(screenWidth / 2 - 200, 518, enemiesSpriteSheet, enemiesSpriteSheetData),
-        Enemy(screenWidth / 2 + 150, 518, enemiesSpriteSheet, enemiesSpriteSheetData),
+        Enemy(screenWidth / 2 - 200, 568, enemiesSpriteSheet, enemiesSpriteSheetData),
+        Enemy(screenWidth / 2 + 150, 568, enemiesSpriteSheet, enemiesSpriteSheetData),
     };
 
     enemyObstacleBounds = {
-        {screenWidth / 2 - 50, screenHeight - 200, 8, 16},
-        {screenWidth / 2 - 300, screenHeight - 200, 8, 16},
-        {screenWidth / 2 + 100, screenHeight - 200, 8, 16},
-        {screenWidth / 2 + 350, screenHeight - 200, 8, 16},
+        {screenWidth / 2 - 50, screenHeight - 150, 8, 16},
+        {screenWidth / 2 - 300, screenHeight - 150, 8, 16},
+        {screenWidth / 2 + 100, screenHeight - 150, 8, 16},
+        {screenWidth / 2 + 350, screenHeight - 150, 8, 16},
     };
 
     platformBounds = {
         {0, screenHeight - 64, screenWidth, 128},
-        {screenWidth / 2, screenHeight - 180, 64, 128},
-        {screenWidth / 2 + 100, screenHeight - 180, 256, 64},
-        {screenWidth / 2 - 300, screenHeight - 180, 256, 64},
+        {screenWidth / 2, screenHeight - 130, 64, 128},
+        {screenWidth / 2 + 100, screenHeight - 130, 256, 64},
+        {screenWidth / 2 - 300, screenHeight - 130, 256, 64},
     };
 
     camera = {0};
@@ -165,7 +165,7 @@ void Game::ManageStructureCollision(float deltaTime)
 
                     if (IsKeyPressed(KEY_SPACE))
                     {
-                        player.velocity.y = -550 * deltaTime;
+                        player.velocity.y = -500 * deltaTime;
                     }
                 }
 
