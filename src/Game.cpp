@@ -3,6 +3,7 @@
 Game::Game()
 {
     isGamePaused = false;
+    isDebugCamera = false;
     screenWidth = 1280;
     screenHeight = 720;
 
@@ -39,8 +40,9 @@ Game::Game()
         {screenWidth / 2 - 300, screenHeight - 130, 256, 64},
     };
 
+    cameraBounds = {screenWidth / 2.0f, screenHeight / 2.0f + 100, screenWidth, screenHeight};
     camera = {0};
-    camera.offset = (Vector2){screenWidth / 2.0f, screenHeight / 2.0f + 100}; // this is for control the camera default position
+    camera.offset = (Vector2){cameraBounds.x, cameraBounds.y}; // this is for control the camera default position
     camera.target = {player.bounds.x, 600};                                   // the object that the camera will be following
     camera.rotation = 0.0f;
     camera.zoom = 2.0f;
@@ -95,6 +97,18 @@ void Game::Draw(float deltaTime)
     ClearBackground(BLACK);
 
     // all the code that should be affected by the camerea, should be put inside BeginMode2D
+
+
+    if (IsKeyPressed(KEY_F1))
+    {
+        isDebugCamera = !isDebugCamera;
+    }
+    
+    if (isDebugCamera)
+    {
+        CameraController(camera);
+    }
+
     BeginMode2D(camera);
 
     // And here I give the camera the player position for the camera to follow.
@@ -191,6 +205,40 @@ void Game::ManageStructureCollision(float deltaTime)
                 player.velocity.x = 0;
             }
         }
+    }
+}
+
+void Game::CameraController(Camera2D &camera)
+{
+    if (IsKeyDown(KEY_RIGHT)) {
+
+        cameraBounds.x += 6;
+    }
+    else if (IsKeyDown(KEY_LEFT)) {
+
+        cameraBounds.x -= 6;
+    }
+
+    // Camera target follows camera bounds
+    camera.target = (Vector2){cameraBounds.x, 600};
+
+    // Camera zoom controls
+    // Uses log scaling to provide consistent zoom speed
+    camera.zoom = expf(logf(camera.zoom) + ((float)GetMouseWheelMove() * 0.1f));
+
+    if (camera.zoom > 3.0f)
+    {
+        camera.zoom = 3.0f;
+    }
+    else if (camera.zoom < 0.1f)
+    {
+        camera.zoom = 0.1f;
+    }
+
+    // Camera reset (zoom and rotation)
+    if (IsKeyPressed(KEY_R))
+    {
+        camera.zoom = 2.0f;
     }
 }
 
