@@ -19,6 +19,7 @@ public:
 
 public:
     Rectangle bounds;
+    Vector2 spawnPosition;
     Rectangle attackBounds;
     Vector2 velocity;
     enum AnimationState

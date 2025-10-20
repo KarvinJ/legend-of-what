@@ -12,6 +12,7 @@ Player::Player(float positionX, float positionY, Texture2D &spriteSheet, unorder
     isMovingRight = true;
     deadTimer = 0;
 
+    spawnPosition = {positionX, positionY};
     idleAnimationRegion = spriteSheetData["idle"];
     bounds = {positionX, positionY, (float)idleAnimationRegion.width / 4, (float)idleAnimationRegion.height};
     attackBounds = {positionX, positionY, 32, 32};
@@ -60,7 +61,7 @@ Player::Player(float positionX, float positionY, Texture2D &spriteSheet, unorder
     previousState = Player::STANDING;
     actualState = Player::STANDING;
 
-    speed = 50;
+    speed = 40;
     velocity = {0, 0};
     framesCounter = 0;
     framesSpeed = 6;
@@ -114,8 +115,8 @@ void Player::Update(float deltaTime)
 
         if (bounds.y > 1280)
         {
-            bounds.y = 400 - bounds.height;
-            bounds.x = 500;
+            bounds.x = spawnPosition.x;
+            bounds.y = spawnPosition.y;
             velocity.y = 0;
         }
     }
@@ -128,6 +129,8 @@ void Player::Update(float deltaTime)
             isDead = false;
             deadTimer = 0;
             actualState = Player::STANDING;
+            bounds.x = spawnPosition.x;
+            bounds.y = spawnPosition.y;
         }
     }
 }

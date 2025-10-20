@@ -16,7 +16,7 @@ Game::Game()
     Texture2D characterSpriteSheet = LoadTexture("assets/img/characters/character-spritesheet.png");
     unordered_map<string, Rectangle> characterSpriteSheetData = loadSpriteSheetData("assets/img/characters/character-spritesheet.txt");
 
-    player = Player(screenWidth / 2, screenHeight / 2, characterSpriteSheet, characterSpriteSheetData);
+    player = Player(screenWidth / 2, 550, characterSpriteSheet, characterSpriteSheetData);
 
     Texture2D enemiesSpriteSheet = LoadTexture("assets/img/enemies/enemies-spritesheet.png");
     unordered_map<string, Rectangle> enemiesSpriteSheetData = loadSpriteSheetData("assets/img/enemies/enemies-spritesheet.txt");
@@ -35,6 +35,7 @@ Game::Game()
 
     platformBounds = {
         {0, screenHeight - 64, screenWidth, 128},
+        {screenWidth + 100, screenHeight - 64, 256, 128},
         {screenWidth / 2, screenHeight - 130, 64, 128},
         {screenWidth / 2 + 100, screenHeight - 130, 256, 64},
         {screenWidth / 2 - 300, screenHeight - 130, 256, 64},
@@ -179,7 +180,7 @@ void Game::ManageStructureCollision(float deltaTime)
 
                     if (IsKeyPressed(KEY_SPACE))
                     {
-                        player.velocity.y = -500 * deltaTime;
+                        player.velocity.y = -425 * deltaTime;
                     }
                 }
 
