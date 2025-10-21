@@ -130,10 +130,10 @@ void Game::Draw(float deltaTime)
         DrawRectangleRec(collisionBound, BLUE);
     }
 
-    for (auto &enemyObstacleBound : enemyObstacleBounds)
-    {
-        DrawRectangleRec(enemyObstacleBound, YELLOW);
-    }
+    // for (auto &enemyObstacleBound : enemyObstacleBounds)
+    // {
+    //     DrawRectangleRec(enemyObstacleBound, YELLOW);
+    // }
 
     player.Draw(deltaTime);
 
