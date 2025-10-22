@@ -36,7 +36,6 @@ Game::Game()
     float standardPlatformWidth = 256;
 
     float gapSize = 150;
-    // float littlePlatformWidth = 128;
     platformBounds = {
         {0, screenHeight - 64, screenWidth, 128},
         {screenWidth / 2, screenHeight - 130, 64, 128},
